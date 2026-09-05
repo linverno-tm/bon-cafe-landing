@@ -163,8 +163,6 @@ img,svg{display:block;max-width:100%;}
 .steam.s1{width:36vw;height:36vw;top:-6%;right:6%;background:radial-gradient(circle,rgba(221,164,99,.35),transparent 70%);animation:drift 14s ease-in-out infinite;}
 .steam.s2{width:26vw;height:26vw;bottom:0%;left:2%;background:radial-gradient(circle,rgba(110,42,56,.3),transparent 70%);animation:drift 18s ease-in-out infinite reverse;}
 @keyframes drift{0%,100%{transform:translate(0,0);}50%{transform:translate(2%,4%);}}
-.hero-mark{position:absolute;top:clamp(6rem,14vw,9rem);left:0;right:0;display:flex;justify-content:center;pointer-events:none;}
-.hero-mark svg{width:min(80vw,620px);height:auto;opacity:.7;}
 .hero-copy{position:relative;z-index:3;}
 .hero-copy .eyebrow{color:var(--caramel-2);}
 h1.hero-title{
@@ -453,13 +451,6 @@ footer{background:var(--espresso);padding:2.6rem 0 2.2rem;border-top:1px solid v
   <div id="hero-parallax">
     <div class="steam s1"></div>
     <div class="steam s2"></div>
-  </div>
-  <div class="hero-mark" aria-hidden="true">
-    <svg viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M60 40c-11 0-20 9-20 20v40c0 11 9 20 20 20h14c13 0 22-9 22-20v-6c0-8-5-14-12-16 6-3 10-9 10-16v-2c0-11-9-20-20-20H60z" stroke="#DDA463" stroke-width="1.2" opacity=".55"/>
-      <circle cx="200" cy="80" r="46" stroke="#DDA463" stroke-width="1.2" opacity=".35"/>
-      <path d="M300 46c9 8 14 19 14 32 0 24-20 44-44 44s-44-20-44-44c0-13 5-24 14-32" stroke="#DDA463" stroke-width="1.2" opacity=".35"/>
-    </svg>
   </div>
   <div class="wrap hero-copy">
     <div class="eyebrow" data-i18n="hero_eyebrow"></div>
