@@ -153,11 +153,16 @@ section[id],header[id]{scroll-margin-top:6.5rem;}
 /* ---------- hero ---------- */
 #hero{
   position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
+  background:var(--espresso);
+  overflow:hidden;padding-bottom:clamp(2.5rem,6vw,4.5rem);
+}
+.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 35%;opacity:.55;}
+.hero-tint{
+  position:absolute;inset:0;
   background:
     radial-gradient(ellipse 70% 55% at 76% 18%,rgba(221,164,99,.30),transparent 60%),
-    radial-gradient(ellipse 60% 45% at 15% 85%,rgba(110,42,56,.22),transparent 60%),
-    linear-gradient(180deg,#140D09 0%,#1D130E 46%,#241812 100%);
-  overflow:hidden;padding-bottom:clamp(2.5rem,6vw,4.5rem);
+    radial-gradient(ellipse 60% 45% at 15% 85%,rgba(110,42,56,.28),transparent 60%),
+    linear-gradient(180deg,#140D09 0%,rgba(29,19,14,.86) 46%,#241812 100%);
 }
 #hero-parallax{position:absolute;inset:-6%;will-change:transform;}
 .steam{position:absolute;border-radius:50%;filter:blur(60px);opacity:.5;}
@@ -221,12 +226,9 @@ h1.hero-title{
 .intro-stats div span{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);}
 .panel{
   position:relative;aspect-ratio:4/5;border-radius:6px;overflow:hidden;
-  background:
-    radial-gradient(ellipse at 30% 20%,rgba(184,122,61,.5),transparent 55%),
-    radial-gradient(ellipse at 80% 85%,rgba(110,42,56,.45),transparent 55%),
-    linear-gradient(160deg,#3B241B,#1D130E);
+  background:#1D130E;
 }
-.panel svg{position:absolute;inset:0;width:100%;height:100%;opacity:.85;}
+.panel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
 .panel::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 90px rgba(0,0,0,.4);}
 
 /* ---------- shelves (coffee / bakery / breakfast / summer) ---------- */
@@ -332,10 +334,12 @@ h1.hero-title{
 
 /* ---------- atmosphere ---------- */
 #atmosphere{position:relative;height:100svh;overflow:hidden;}
-#atmo-panel{position:absolute;inset:-8%;
-  background:radial-gradient(ellipse 60% 50% at 25% 30%,rgba(184,122,61,.5),transparent 60%),
-  radial-gradient(ellipse 55% 45% at 80% 75%,rgba(110,42,56,.45),transparent 60%),
-  linear-gradient(180deg,#140D09,#231710);
+#atmo-panel{position:absolute;inset:-8%;background:#140D09;}
+#atmo-panel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.65;}
+#atmo-panel .tint{position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 50% at 25% 30%,rgba(184,122,61,.35),transparent 60%),
+  radial-gradient(ellipse 55% 45% at 80% 75%,rgba(110,42,56,.4),transparent 60%),
+  linear-gradient(180deg,rgba(20,13,9,.75),rgba(35,23,16,.8));
 }
 #atmosphere .copy{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.6rem;}
 #atmosphere h2{color:var(--paper);font-size:clamp(2.2rem,6vw,4.2rem);}
@@ -347,14 +351,15 @@ h1.hero-title{
 .social-head h2{font-size:clamp(2.4rem,6vw,4.2rem);}
 .ig-link{display:inline-flex;align-items:center;gap:.6rem;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--ink);padding-bottom:.3rem;}
 .collage{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:70px;gap:.9rem;}
-.tile{border-radius:4px;position:relative;overflow:hidden;transition:transform .4s cubic-bezier(.16,1,.3,1);}
+.tile{border-radius:4px;position:relative;overflow:hidden;transition:transform .4s cubic-bezier(.16,1,.3,1);background:#1D130E;}
+.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
 .tile:hover{transform:scale(1.02) rotate(0deg) !important;z-index:2;}
-.tile:nth-child(1){grid-column:1/6;grid-row:1/6;transform:rotate(-1.2deg);background:linear-gradient(150deg,#3B241B,#B87A3D);}
-.tile:nth-child(2){grid-column:6/9;grid-row:1/4;transform:rotate(1.4deg);background:linear-gradient(150deg,#6E2A38,#DDA463);}
-.tile:nth-child(3){grid-column:9/13;grid-row:1/5;transform:rotate(-.8deg);background:linear-gradient(150deg,#35211A,#8FA06A);}
-.tile:nth-child(4){grid-column:6/10;grid-row:4/8;transform:rotate(-1deg);background:linear-gradient(150deg,#B87A3D,#F2E7C9);}
-.tile:nth-child(5){grid-column:1/6;grid-row:6/9;transform:rotate(.9deg);background:linear-gradient(150deg,#241812,#6E2A38);}
-.tile:nth-child(6){grid-column:10/13;grid-row:5/9;transform:rotate(1.1deg);background:linear-gradient(150deg,#2A1C15,#DDA463);}
+.tile:nth-child(1){grid-column:1/6;grid-row:1/6;transform:rotate(-1.2deg);}
+.tile:nth-child(2){grid-column:6/9;grid-row:1/4;transform:rotate(1.4deg);}
+.tile:nth-child(3){grid-column:9/13;grid-row:1/5;transform:rotate(-.8deg);}
+.tile:nth-child(4){grid-column:6/10;grid-row:4/8;transform:rotate(-1deg);}
+.tile:nth-child(5){grid-column:1/6;grid-row:6/9;transform:rotate(.9deg);}
+.tile:nth-child(6){grid-column:10/13;grid-row:5/9;transform:rotate(1.1deg);}
 @media (max-width:760px){
   .collage{grid-template-columns:repeat(6,1fr);grid-auto-rows:110px;}
   .tile:nth-child(1){grid-column:1/4;grid-row:1/3;}
@@ -390,14 +395,32 @@ h1.hero-title{
 .loc-row .loc-pin:hover{border-color:var(--caramel-2);color:var(--caramel-2);}
 .loc-note{margin-top:1rem;font-size:.78rem;color:var(--paper-soft);opacity:.7;}
 .map{position:relative;aspect-ratio:1/1;border-radius:6px;overflow:hidden;background:#140D09;border:1px solid var(--line-dark);}
-.map svg{position:absolute;inset:0;width:100%;height:100%;}
-.pin{position:absolute;width:14px;height:14px;}
-.pin::before,.pin::after{content:'';position:absolute;border-radius:50%;}
-.pin::before{inset:0;background:var(--caramel-2);}
-.pin::after{inset:-9px;border:1px solid var(--caramel-2);animation:pulse 2.4s ease-out infinite;}
-.pin.big{width:18px;height:18px;}
-.pin.big::before{background:var(--paper);}
+#leaflet-map{position:absolute;inset:0;background:#140D09;}
+.map .locate-wrap{position:absolute;left:.9rem;top:.9rem;z-index:500;display:flex;flex-direction:column;gap:.5rem;max-width:calc(100% - 1.8rem);}
+.locate-btn{
+  display:inline-flex;align-items:center;gap:.5rem;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;
+  padding:.6rem 1rem;border-radius:100px;background:rgba(20,13,9,.78);backdrop-filter:blur(8px);
+  border:1px solid var(--line-dark);color:var(--paper);transition:border-color .3s,background .3s;align-self:flex-start;
+}
+.locate-btn:hover{border-color:var(--caramel-2);}
+.locate-btn svg{width:14px;height:14px;flex:none;}
+.loc-status{font-size:.72rem;color:var(--paper-soft);background:rgba(20,13,9,.78);backdrop-filter:blur(8px);padding:.5rem .8rem;border-radius:8px;display:none;}
+.loc-status.show{display:block;}
+.pin-dot{width:14px;height:14px;position:relative;}
+.pin-dot::before,.pin-dot::after{content:'';position:absolute;border-radius:50%;}
+.pin-dot::before{inset:0;background:var(--caramel-2);}
+.pin-dot::after{inset:-9px;border:1px solid var(--caramel-2);animation:pulse 2.4s ease-out infinite;}
+.pin-dot.me{width:18px;height:18px;}
+.pin-dot.me::before{background:var(--paper);}
+.pin-dot.me::after{border-color:var(--paper);}
 @keyframes pulse{0%{transform:scale(.6);opacity:.8;}100%{transform:scale(2.4);opacity:0;}}
+.leaflet-popup-content-wrapper{background:var(--espresso-2);color:var(--paper);border-radius:6px;}
+.leaflet-popup-tip{background:var(--espresso-2);}
+.leaflet-popup-content{font-family:'Inter',sans-serif;font-size:.82rem;margin:.7rem .9rem;line-height:1.5;}
+.leaflet-popup-content b{font-family:'Fraunces',serif;font-size:.95rem;display:block;margin-bottom:.2rem;}
+.leaflet-control-attribution{background:rgba(20,13,9,.7) !important;color:var(--paper-soft) !important;font-size:.62rem !important;}
+.leaflet-control-attribution a{color:var(--paper) !important;}
+.leaflet-control-zoom a{background:rgba(20,13,9,.78) !important;color:var(--paper) !important;border-color:var(--line-dark) !important;}
 @media (max-width:900px){.loc-body{grid-template-columns:1fr;}.map{aspect-ratio:16/10;}}
 
 /* ---------- final cta ---------- */
@@ -423,6 +446,670 @@ footer{background:var(--espresso);padding:2.6rem 0 2.2rem;border-top:1px solid v
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important;}
 }
+
+/* ---------- Leaflet (inlined; Artifact CSP only allows stylesheets from fonts.googleapis.com) ---------- */
+/* required styles */
+
+.leaflet-pane,
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-tile-container,
+.leaflet-pane > svg,
+.leaflet-pane > canvas,
+.leaflet-zoom-box,
+.leaflet-image-layer,
+.leaflet-layer {
+	position: absolute;
+	left: 0;
+	top: 0;
+	}
+.leaflet-container {
+	overflow: hidden;
+	}
+.leaflet-tile,
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	        user-select: none;
+	  -webkit-user-drag: none;
+	}
+/* Prevents IE11 from highlighting tiles in blue */
+.leaflet-tile::selection {
+	background: transparent;
+}
+/* Safari renders non-retina tile on retina better with this, but Chrome is worse */
+.leaflet-safari .leaflet-tile {
+	image-rendering: -webkit-optimize-contrast;
+	}
+/* hack that prevents hw layers "stretching" when loading new tiles */
+.leaflet-safari .leaflet-tile-container {
+	width: 1600px;
+	height: 1600px;
+	-webkit-transform-origin: 0 0;
+	}
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	display: block;
+	}
+/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */
+/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */
+.leaflet-container .leaflet-overlay-pane svg {
+	max-width: none !important;
+	max-height: none !important;
+	}
+.leaflet-container .leaflet-marker-pane img,
+.leaflet-container .leaflet-shadow-pane img,
+.leaflet-container .leaflet-tile-pane img,
+.leaflet-container img.leaflet-image-layer,
+.leaflet-container .leaflet-tile {
+	max-width: none !important;
+	max-height: none !important;
+	width: auto;
+	padding: 0;
+	}
+
+.leaflet-container img.leaflet-tile {
+	/* See: https://bugs.chromium.org/p/chromium/issues/detail?id=600120 */
+	mix-blend-mode: plus-lighter;
+}
+
+.leaflet-container.leaflet-touch-zoom {
+	-ms-touch-action: pan-x pan-y;
+	touch-action: pan-x pan-y;
+	}
+.leaflet-container.leaflet-touch-drag {
+	-ms-touch-action: pinch-zoom;
+	/* Fallback for FF which doesn't support pinch-zoom */
+	touch-action: none;
+	touch-action: pinch-zoom;
+}
+.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {
+	-ms-touch-action: none;
+	touch-action: none;
+}
+.leaflet-container {
+	-webkit-tap-highlight-color: transparent;
+}
+.leaflet-container a {
+	-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);
+}
+.leaflet-tile {
+	filter: inherit;
+	visibility: hidden;
+	}
+.leaflet-tile-loaded {
+	visibility: inherit;
+	}
+.leaflet-zoom-box {
+	width: 0;
+	height: 0;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	z-index: 800;
+	}
+/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */
+.leaflet-overlay-pane svg {
+	-moz-user-select: none;
+	}
+
+.leaflet-pane         { z-index: 400; }
+
+.leaflet-tile-pane    { z-index: 200; }
+.leaflet-overlay-pane { z-index: 400; }
+.leaflet-shadow-pane  { z-index: 500; }
+.leaflet-marker-pane  { z-index: 600; }
+.leaflet-tooltip-pane   { z-index: 650; }
+.leaflet-popup-pane   { z-index: 700; }
+
+.leaflet-map-pane canvas { z-index: 100; }
+.leaflet-map-pane svg    { z-index: 200; }
+
+.leaflet-vml-shape {
+	width: 1px;
+	height: 1px;
+	}
+.lvml {
+	behavior: url(#default#VML);
+	display: inline-block;
+	position: absolute;
+	}
+
+
+/* control positioning */
+
+.leaflet-control {
+	position: relative;
+	z-index: 800;
+	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+	pointer-events: auto;
+	}
+.leaflet-top,
+.leaflet-bottom {
+	position: absolute;
+	z-index: 1000;
+	pointer-events: none;
+	}
+.leaflet-top {
+	top: 0;
+	}
+.leaflet-right {
+	right: 0;
+	}
+.leaflet-bottom {
+	bottom: 0;
+	}
+.leaflet-left {
+	left: 0;
+	}
+.leaflet-control {
+	float: left;
+	clear: both;
+	}
+.leaflet-right .leaflet-control {
+	float: right;
+	}
+.leaflet-top .leaflet-control {
+	margin-top: 10px;
+	}
+.leaflet-bottom .leaflet-control {
+	margin-bottom: 10px;
+	}
+.leaflet-left .leaflet-control {
+	margin-left: 10px;
+	}
+.leaflet-right .leaflet-control {
+	margin-right: 10px;
+	}
+
+
+/* zoom and fade animations */
+
+.leaflet-fade-anim .leaflet-popup {
+	opacity: 0;
+	-webkit-transition: opacity 0.2s linear;
+	   -moz-transition: opacity 0.2s linear;
+	        transition: opacity 0.2s linear;
+	}
+.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
+	opacity: 1;
+	}
+.leaflet-zoom-animated {
+	-webkit-transform-origin: 0 0;
+	    -ms-transform-origin: 0 0;
+	        transform-origin: 0 0;
+	}
+svg.leaflet-zoom-animated {
+	will-change: transform;
+}
+
+.leaflet-zoom-anim .leaflet-zoom-animated {
+	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);
+	   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);
+	        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);
+	}
+.leaflet-zoom-anim .leaflet-tile,
+.leaflet-pan-anim .leaflet-tile {
+	-webkit-transition: none;
+	   -moz-transition: none;
+	        transition: none;
+	}
+
+.leaflet-zoom-anim .leaflet-zoom-hide {
+	visibility: hidden;
+	}
+
+
+/* cursors */
+
+.leaflet-interactive {
+	cursor: pointer;
+	}
+.leaflet-grab {
+	cursor: -webkit-grab;
+	cursor:    -moz-grab;
+	cursor:         grab;
+	}
+.leaflet-crosshair,
+.leaflet-crosshair .leaflet-interactive {
+	cursor: crosshair;
+	}
+.leaflet-popup-pane,
+.leaflet-control {
+	cursor: auto;
+	}
+.leaflet-dragging .leaflet-grab,
+.leaflet-dragging .leaflet-grab .leaflet-interactive,
+.leaflet-dragging .leaflet-marker-draggable {
+	cursor: move;
+	cursor: -webkit-grabbing;
+	cursor:    -moz-grabbing;
+	cursor:         grabbing;
+	}
+
+/* marker & overlays interactivity */
+.leaflet-marker-icon,
+.leaflet-marker-shadow,
+.leaflet-image-layer,
+.leaflet-pane > svg path,
+.leaflet-tile-container {
+	pointer-events: none;
+	}
+
+.leaflet-marker-icon.leaflet-interactive,
+.leaflet-image-layer.leaflet-interactive,
+.leaflet-pane > svg path.leaflet-interactive,
+svg.leaflet-image-layer.leaflet-interactive path {
+	pointer-events: visiblePainted; /* IE 9-10 doesn't have auto */
+	pointer-events: auto;
+	}
+
+/* visual tweaks */
+
+.leaflet-container {
+	background: #ddd;
+	outline-offset: 1px;
+	}
+.leaflet-container a {
+	color: #0078A8;
+	}
+.leaflet-zoom-box {
+	border: 2px dotted #38f;
+	background: rgba(255,255,255,0.5);
+	}
+
+
+/* general typography */
+.leaflet-container {
+	font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-size: 0.75rem;
+	line-height: 1.5;
+	}
+
+
+/* general toolbar styles */
+
+.leaflet-bar {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+	border-radius: 4px;
+	}
+.leaflet-bar a {
+	background-color: #fff;
+	border-bottom: 1px solid #ccc;
+	width: 26px;
+	height: 26px;
+	line-height: 26px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	color: black;
+	}
+.leaflet-bar a,
+.leaflet-control-layers-toggle {
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	display: block;
+	}
+.leaflet-bar a:hover,
+.leaflet-bar a:focus {
+	background-color: #f4f4f4;
+	}
+.leaflet-bar a:first-child {
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	}
+.leaflet-bar a:last-child {
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	border-bottom: none;
+	}
+.leaflet-bar a.leaflet-disabled {
+	cursor: default;
+	background-color: #f4f4f4;
+	color: #bbb;
+	}
+
+.leaflet-touch .leaflet-bar a {
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
+	}
+.leaflet-touch .leaflet-bar a:first-child {
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
+	}
+.leaflet-touch .leaflet-bar a:last-child {
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
+	}
+
+/* zoom control */
+
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
+	font: bold 18px 'Lucida Console', Monaco, monospace;
+	text-indent: 1px;
+	}
+
+.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {
+	font-size: 22px;
+	}
+
+
+/* layers control */
+
+.leaflet-control-layers {
+	box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+	background: #fff;
+	border-radius: 5px;
+	}
+.leaflet-control-layers-toggle {
+	background-image: url(images/layers.png);
+	width: 36px;
+	height: 36px;
+	}
+.leaflet-retina .leaflet-control-layers-toggle {
+	background-image: url(images/layers-2x.png);
+	background-size: 26px 26px;
+	}
+.leaflet-touch .leaflet-control-layers-toggle {
+	width: 44px;
+	height: 44px;
+	}
+.leaflet-control-layers .leaflet-control-layers-list,
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+	display: none;
+	}
+.leaflet-control-layers-expanded .leaflet-control-layers-list {
+	display: block;
+	position: relative;
+	}
+.leaflet-control-layers-expanded {
+	padding: 6px 10px 6px 6px;
+	color: #333;
+	background: #fff;
+	}
+.leaflet-control-layers-scrollbar {
+	overflow-y: scroll;
+	overflow-x: hidden;
+	padding-right: 5px;
+	}
+.leaflet-control-layers-selector {
+	margin-top: 2px;
+	position: relative;
+	top: 1px;
+	}
+.leaflet-control-layers label {
+	display: block;
+	font-size: 13px;
+	font-size: 1.08333em;
+	}
+.leaflet-control-layers-separator {
+	height: 0;
+	border-top: 1px solid #ddd;
+	margin: 5px -10px 5px -6px;
+	}
+
+/* Default icon URLs */
+.leaflet-default-icon-path { /* used only in path-guessing heuristic, see L.Icon.Default */
+	background-image: url(images/marker-icon.png);
+	}
+
+
+/* attribution and scale controls */
+
+.leaflet-container .leaflet-control-attribution {
+	background: #fff;
+	background: rgba(255, 255, 255, 0.8);
+	margin: 0;
+	}
+.leaflet-control-attribution,
+.leaflet-control-scale-line {
+	padding: 0 5px;
+	color: #333;
+	line-height: 1.4;
+	}
+.leaflet-control-attribution a {
+	text-decoration: none;
+	}
+.leaflet-control-attribution a:hover,
+.leaflet-control-attribution a:focus {
+	text-decoration: underline;
+	}
+.leaflet-attribution-flag {
+	display: inline !important;
+	vertical-align: baseline !important;
+	width: 1em;
+	height: 0.6669em;
+	}
+.leaflet-left .leaflet-control-scale {
+	margin-left: 5px;
+	}
+.leaflet-bottom .leaflet-control-scale {
+	margin-bottom: 5px;
+	}
+.leaflet-control-scale-line {
+	border: 2px solid #777;
+	border-top: none;
+	line-height: 1.1;
+	padding: 2px 5px 1px;
+	white-space: nowrap;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
+	background: rgba(255, 255, 255, 0.8);
+	text-shadow: 1px 1px #fff;
+	}
+.leaflet-control-scale-line:not(:first-child) {
+	border-top: 2px solid #777;
+	border-bottom: none;
+	margin-top: -2px;
+	}
+.leaflet-control-scale-line:not(:first-child):not(:last-child) {
+	border-bottom: 2px solid #777;
+	}
+
+.leaflet-touch .leaflet-control-attribution,
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	box-shadow: none;
+	}
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	border: 2px solid rgba(0,0,0,0.2);
+	background-clip: padding-box;
+	}
+
+
+/* popup */
+
+.leaflet-popup {
+	position: absolute;
+	text-align: center;
+	margin-bottom: 20px;
+	}
+.leaflet-popup-content-wrapper {
+	padding: 1px;
+	text-align: left;
+	border-radius: 12px;
+	}
+.leaflet-popup-content {
+	margin: 13px 24px 13px 20px;
+	line-height: 1.3;
+	font-size: 13px;
+	font-size: 1.08333em;
+	min-height: 1px;
+	}
+.leaflet-popup-content p {
+	margin: 17px 0;
+	margin: 1.3em 0;
+	}
+.leaflet-popup-tip-container {
+	width: 40px;
+	height: 20px;
+	position: absolute;
+	left: 50%;
+	margin-top: -1px;
+	margin-left: -20px;
+	overflow: hidden;
+	pointer-events: none;
+	}
+.leaflet-popup-tip {
+	width: 17px;
+	height: 17px;
+	padding: 1px;
+
+	margin: -10px auto 0;
+	pointer-events: auto;
+
+	-webkit-transform: rotate(45deg);
+	   -moz-transform: rotate(45deg);
+	    -ms-transform: rotate(45deg);
+	        transform: rotate(45deg);
+	}
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+	background: white;
+	color: #333;
+	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+	}
+.leaflet-container a.leaflet-popup-close-button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	border: none;
+	text-align: center;
+	width: 24px;
+	height: 24px;
+	font: 16px/24px Tahoma, Verdana, sans-serif;
+	color: #757575;
+	text-decoration: none;
+	background: transparent;
+	}
+.leaflet-container a.leaflet-popup-close-button:hover,
+.leaflet-container a.leaflet-popup-close-button:focus {
+	color: #585858;
+	}
+.leaflet-popup-scrolled {
+	overflow: auto;
+	}
+
+.leaflet-oldie .leaflet-popup-content-wrapper {
+	-ms-zoom: 1;
+	}
+.leaflet-oldie .leaflet-popup-tip {
+	width: 24px;
+	margin: 0 auto;
+
+	-ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
+	filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
+	}
+
+.leaflet-oldie .leaflet-control-zoom,
+.leaflet-oldie .leaflet-control-layers,
+.leaflet-oldie .leaflet-popup-content-wrapper,
+.leaflet-oldie .leaflet-popup-tip {
+	border: 1px solid #999;
+	}
+
+
+/* div icon */
+
+.leaflet-div-icon {
+	background: #fff;
+	border: 1px solid #666;
+	}
+
+
+/* Tooltip */
+/* Base styles for the element that has a tooltip */
+.leaflet-tooltip {
+	position: absolute;
+	padding: 6px;
+	background-color: #fff;
+	border: 1px solid #fff;
+	border-radius: 3px;
+	color: #222;
+	white-space: nowrap;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	pointer-events: none;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+	}
+.leaflet-tooltip.leaflet-interactive {
+	cursor: pointer;
+	pointer-events: auto;
+	}
+.leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	position: absolute;
+	pointer-events: none;
+	border: 6px solid transparent;
+	background: transparent;
+	content: "";
+	}
+
+/* Directions */
+
+.leaflet-tooltip-bottom {
+	margin-top: 6px;
+}
+.leaflet-tooltip-top {
+	margin-top: -6px;
+}
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-top:before {
+	left: 50%;
+	margin-left: -6px;
+	}
+.leaflet-tooltip-top:before {
+	bottom: 0;
+	margin-bottom: -12px;
+	border-top-color: #fff;
+	}
+.leaflet-tooltip-bottom:before {
+	top: 0;
+	margin-top: -12px;
+	margin-left: -6px;
+	border-bottom-color: #fff;
+	}
+.leaflet-tooltip-left {
+	margin-left: -6px;
+}
+.leaflet-tooltip-right {
+	margin-left: 6px;
+}
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+	top: 50%;
+	margin-top: -6px;
+	}
+.leaflet-tooltip-left:before {
+	right: 0;
+	margin-right: -12px;
+	border-left-color: #fff;
+	}
+.leaflet-tooltip-right:before {
+	left: 0;
+	margin-left: -12px;
+	border-right-color: #fff;
+	}
+
+/* Printing */
+
+@media print {
+	/* Prevent printers from removing background-images of controls. */
+	.leaflet-control {
+		-webkit-print-color-adjust: exact;
+		print-color-adjust: exact;
+		}
+	}
+
 </style>
 </head>
 <body>
@@ -456,6 +1143,8 @@ footer{background:var(--espresso);padding:2.6rem 0 2.2rem;border-top:1px solid v
 </nav>
 
 <header id="hero">
+  <img class="hero-photo" src="images/counter.jpg" alt="" aria-hidden="true">
+  <div class="hero-tint" aria-hidden="true"></div>
   <div id="hero-parallax">
     <div class="steam s1"></div>
     <div class="steam s2"></div>
@@ -490,12 +1179,7 @@ footer{background:var(--espresso);padding:2.6rem 0 2.2rem;border-top:1px solid v
       </div>
     </div>
     <div class="panel" data-reveal="scale">
-      <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M150 320c0 40 20 70 50 70s50-30 50-70v-90h-100z" stroke="#F7F1E4" stroke-width="1.3" opacity=".5"/>
-        <path d="M170 230c-6-20 6-38 30-38s36 18 30 38" stroke="#F7F1E4" stroke-width="1.3" opacity=".4"/>
-        <path d="M190 190c-4-16 2-30 10-40M210 190c4-16-2-30-10-40" stroke="#DDA463" stroke-width="1.2" opacity=".5"/>
-        <circle cx="200" cy="330" r="120" stroke="#DDA463" stroke-width="1" opacity=".2"/>
-      </svg>
+      <img src="images/flatlay.jpg" alt="BON! salad, galette, gazpacho and espresso styled on a stone table">
     </div>
   </div>
 </section>
@@ -582,7 +1266,10 @@ footer{background:var(--espresso);padding:2.6rem 0 2.2rem;border-top:1px solid v
 </section>
 
 <section id="atmosphere">
-  <div id="atmo-panel"></div>
+  <div id="atmo-panel">
+    <img src="images/interior.jpg" alt="BON! Signature interior, striped canopy ceiling and lounge seating">
+    <div class="tint" aria-hidden="true"></div>
+  </div>
   <div class="copy">
     <p data-reveal data-i18n="atmo_p1"></p>
     <h2 data-reveal data-i18n="atmo_h2"></h2>
@@ -596,8 +1283,12 @@ footer{background:var(--espresso);padding:2.6rem 0 2.2rem;border-top:1px solid v
       <a class="ig-link" href="https://www.instagram.com/boncafe_uz/" target="_blank" rel="noopener" data-cursor="explore">@boncafe_uz &nbsp;&rarr;</a>
     </div>
     <div class="collage" data-reveal>
-      <div class="tile"></div><div class="tile"></div><div class="tile"></div>
-      <div class="tile"></div><div class="tile"></div><div class="tile"></div>
+      <div class="tile"><img src="images/croissants.jpg" alt="Fresh croissants at BON!" loading="lazy"></div>
+      <div class="tile"><img src="images/pastry-box.jpg" alt="A BON! pastry box" loading="lazy"></div>
+      <div class="tile"><img src="images/interior.jpg" alt="BON! Signature interior" loading="lazy"></div>
+      <div class="tile"><img src="images/table.jpg" alt="Crêpe, croissant and iced coffee at BON!" loading="lazy"></div>
+      <div class="tile"><img src="images/counter.jpg" alt="A BON! drink on the counter" loading="lazy"></div>
+      <div class="tile"><img src="images/flatlay.jpg" alt="BON! salad and galette styling" loading="lazy"></div>
     </div>
   </div>
 </section>
@@ -618,7 +1309,16 @@ footer{background:var(--espresso);padding:2.6rem 0 2.2rem;border-top:1px solid v
         <div class="loc-list" id="loc-list"></div>
         <p class="loc-note" data-i18n="loc_note"></p>
       </div>
-      <div class="map" data-reveal="scale" id="map"></div>
+      <div class="map" data-reveal="scale" id="map">
+        <div id="leaflet-map"></div>
+        <div class="locate-wrap">
+          <button class="locate-btn" id="locate-btn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+            <span data-i18n="loc_locate_btn"></span>
+          </button>
+          <div class="loc-status" id="loc-status"></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -653,6 +1353,7 @@ footer{background:var(--espresso);padding:2.6rem 0 2.2rem;border-top:1px solid v
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
 <script>
 (function(){
 "use strict";
@@ -690,6 +1391,11 @@ en:{
   foot_brand_line:'BON! Café · 34 locations across Uzbekistan',
   foot_disclaimer:'Menu, sizes & prices sourced from Yandex Eda delivery listing · dine-in may differ.',
   cursor_view:'View',cursor_explore:'Explore',search_ph:'Search by street…',
+  loc_locate_btn:'Find my location',loc_locating:'Locating you…',
+  loc_nearest:'Nearest to you',loc_km_away:'km away',
+  loc_denied:'Location access was not granted — you can still browse the map and list.',
+  loc_unsupported:'Your browser doesn\'t support geolocation.',
+  loc_approx:'(approximate pin)',
 },
 ru:{
   nav_about:'О нас',nav_menu:'Меню',nav_moments:'Моменты',nav_locations:'Филиалы',nav_cta:'Меню',
@@ -720,6 +1426,11 @@ ru:{
   foot_brand_line:'BON! Café · 34 филиала по Узбекистану',
   foot_disclaimer:'Меню, объёмы и цены — из листинга доставки Яндекс Еда · в кафе могут отличаться.',
   cursor_view:'Смотреть',cursor_explore:'Открыть',search_ph:'Поиск по улице…',
+  loc_locate_btn:'Найти меня',loc_locating:'Определяем ваше местоположение…',
+  loc_nearest:'Ближе всего к вам',loc_km_away:'км от вас',
+  loc_denied:'Доступ к геолокации не предоставлен — карту и список можно листать вручную.',
+  loc_unsupported:'Ваш браузер не поддерживает геолокацию.',
+  loc_approx:'(приблизительная метка)',
 },
 uz:{
   nav_about:'Biz haqimizda',nav_menu:'Menyu',nav_moments:'Lahzalar',nav_locations:'Filiallar',nav_cta:'Menyu',
@@ -750,6 +1461,11 @@ uz:{
   foot_brand_line:"BON! Café · O'zbekiston bo'ylab 34 ta filial",
   foot_disclaimer:"Menyu, hajm va narxlar Yandex Eda yetkazib berish varag'idan olingan · kafeda farq qilishi mumkin.",
   cursor_view:"Ko'rish",cursor_explore:'Ochish',search_ph:"Ko'cha bo'yicha qidirish…",
+  loc_locate_btn:'Mening joylashuvim',loc_locating:'Joylashuvingiz aniqlanmoqda…',
+  loc_nearest:'Sizga eng yaqin',loc_km_away:'km masofada',
+  loc_denied:"Joylashuvga ruxsat berilmadi — xarita va ro'yxatni qo'lda ko'rishingiz mumkin.",
+  loc_unsupported:'Brauzeringiz geolokatsiyani qo\'llab-quvvatlamaydi.',
+  loc_approx:'(taxminiy belgi)',
 },
 };
 let LANG = localStorage.getItem('bonLang') || 'uz';
@@ -854,40 +1570,40 @@ function pick(item,field){return item[field+({en:'En',ru:'Ru',uz:'Uz'}[LANG])] |
 
 /* ================= branches data (source: BON! Café official location list) ================= */
 const BRANCHES = [
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Fidokor Street, 40',addrRu:'Улица Фидокор, 40',addrUz:"Fidokor ko'chasi, 40",hours:'07:30–23:00',phone:'+998 78 150-18-34'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Uqchi Street, 5',addrRu:'Улица Укчи, 5',addrUz:"O'qchi ko'chasi, 5",hours:'08:00–23:00',phone:'+998 95 855-01-59'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Shota Rustaveli Street, 63',addrRu:'Улица Шота Руставели, 63',addrUz:"Shota Rustaveli ko'chasi, 63",hours:'07:30–23:00',phone:'+998 99 444-18-01'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Beruniy Avenue, 12',addrRu:'Проспект Беруни, 12',addrUz:"Beruniy ko'chasi, 12",hours:'08:00–23:00',phone:'+998 99 444-38-98'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Taras Shevchenko Street, 28',addrRu:'Улица Тараса Шевченко, 28',addrUz:"Taras Shevchenko ko'chasi, 28",hours:'07:30–23:00',phone:'+998 71 252-56-94'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Glinka Street, 46',addrRu:'Улица Глинки, 46',addrUz:"Glinka ko'chasi, 46",hours:'08:00–23:00',phone:'+998 77 391-58-50'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:"Buyuk Ipak Yo'li, 44",addrRu:'Массив Буюк Ипак Йули, 44',addrUz:"Buyuk Ipak yo'li, 44",hours:'07:30–23:00',phone:'+998 99 444-18-05'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Temur Malik Street, 3',addrRu:'Улица Тимура Малика, 3',addrUz:"Temur Malik ko'chasi, 3",hours:'08:00–23:00',phone:'+998 99 444-38-09'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:"Kichik Halqa Yo'li, 26",addrRu:'Малая кольцевая, 26',addrUz:"Kichik halqa yo'li, 26",hours:'08:00–23:00',phone:'+998 77 448-01-91'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Qatortol Street, 28',addrRu:'Улица Катартал, 28',addrUz:"Qatortol ko'chasi, 28",hours:'08:00–23:00',phone:'+998 95 144-00-54'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Sayohat Street, 2',addrRu:'Улица Саёхат, 2',addrUz:"Sayohat ko'chasi, 2",hours:'08:00–23:00',phone:'+998 99 370-11-01'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:"Oqqo'rg'on Street, 14A",addrRu:'Улица Аккурган, 14A',addrUz:"Oqqo'rg'on ko'chasi, 14A",hours:'07:30–23:00',phone:'+998 99 444-18-04'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Chimkent Street, 21',addrRu:'Улица Чимкент, 21',addrUz:"Chimkent ko'chasi, 21",hours:'08:00–23:00',phone:'+998 99 444-18-02'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Tepamasjid Street, 1',addrRu:'Улица Тепамасжид, 1',addrUz:"Tepamasjid ko'chasi, 1",hours:'08:00–23:00',phone:'+998 95 134-13-83'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Amir Temur Avenue, 72A',addrRu:'Проспект Амира Темура, 72A',addrUz:"Amir Temur shoh ko'chasi, 72A",hours:'08:00–23:00',phone:'+998 95 017-30-30'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Istiqbol Street, 18',addrRu:'Улица Истикбол, 18',addrUz:"Istiqbol ko'chasi, 18",hours:'08:00–23:00',phone:'+998 95 992-95-15'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Nodira Street 4, Riviera Mall',addrRu:'Улица Нодиры 4, ТРЦ Riviera',addrUz:"Nodira ko'chasi, 4, Riviera mall",hours:'08:00–23:00',phone:'+998 77 761-76-71'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Qoratosh, 5A, Samarqand Darvoza',addrRu:'Каратош, 5A, Самарканд Дарвоза',addrUz:"Qoratosh, 5A, Samarqand Darvoza",hours:'08:00–23:00',phone:'+998 99 444-40-16'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Alisher Navoiy Avenue, 22',addrRu:'Проспект Алишера Навои, 22',addrUz:"Alisher Navoiy shoh ko'chasi, 22",hours:'08:00–23:00',phone:'+998 71 241-20-67'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Bobur Street, 6',addrRu:'Улица Бабура, 6',addrUz:"Bobur ko'chasi, 6",hours:'08:00–23:00',phone:'+998 95 670-39-89'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Ahmad Donish Street, 80',addrRu:'Улица Ахмада Дониша, 80',addrUz:"Ahmad Donish ko'chasi, 80",hours:'08:00–23:00',phone:'+998 99 010-74-59'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Sayram Street, 26/14',addrRu:'Улица Сайрам, 26/14',addrUz:"Sayram ko'chasi, 26/14",hours:'08:00–23:00',phone:'+998 95 974-99-22'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Nuroniylar Street, 2',addrRu:'Улица Нуронийлар, 2',addrUz:"Nuroniylar ko'chasi, 2",hours:'08:00–23:00',phone:'+998 77 311-82-81'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Amir Temur Avenue, 118A',addrRu:'Проспект Амира Темура, 118A',addrUz:"Amir Temur shoh ko'chasi, 118A",hours:'08:00–23:00',phone:'+998 77 311-82-84'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Bobur Street, 174',addrRu:'Улица Бабура, 174',addrUz:"Bobur ko'chasi, 174",hours:'10:00–23:00',phone:'+998 95 845-17-19'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Zargarlik Street, 10A',addrRu:'Улица Заргалик, 10A',addrUz:"Zargarlik ko'chasi, 10A",hours:'08:00–23:00',phone:'+998 95 124-43-41'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:"Kichik Beshyog'och Street, 124/1",addrRu:'Улица Кичик Бешагач, 124/1',addrUz:"Kichik Beshyog'och ko'chasi, 124/1",hours:'08:00–23:00',phone:'+998 77 798-88-97'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:"Oqqo'rg'on Street, 33",addrRu:'Улица Аккурган, 33',addrUz:"Oqqo'rg'on ko'chasi, 33",hours:'08:00–23:00',phone:'+998 95 150-15-50'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Yangi Sergeli Street',addrRu:'Улица Янги Сергели',addrUz:"Yangi Sergeli ko'chasi",hours:'08:00–23:00',phone:'+998 77 330-76-79'},
-  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Botir Zokirov Street 7, Tashkent City Mall',addrRu:'Ботира Зокирова 7, ТРЦ Tashkent City Mall',addrUz:"Botir Zokirov ko'chasi, 7, Tashkent City Mall",hours:'10:00–23:00',phone:'+998 95 722-74-70'},
-  {region:'regions',cityEn:'Bukhara',cityRu:'Бухоро',cityUz:'Buxoro',addrEn:'Bahouddin Naqshband Street, 4',addrRu:'Улица Бахауддина Накшбанда, 4',addrUz:"Bahouddin Naqshband ko'chasi, 4",hours:'08:00–23:00',phone:'+998 95 795-25-21'},
-  {region:'regions',cityEn:'Andijan',cityRu:'Андижан',cityUz:'Andijon',addrEn:'Mashrab Street, 62B',addrRu:'Улица Машраба, 62B',addrUz:"Mashrab ko'chasi, 62B",hours:'08:00–23:00',phone:'+998 95 959-50-91'},
-  {region:'regions',cityEn:'Samarkand',cityRu:'Самарканд',cityUz:'Samarqand',addrEn:'Amir Temur Street, 24',addrRu:'Улица Амира Темура, 24',addrUz:"Amir Temur ko'chasi, 24",hours:'08:00–23:00',phone:'+998 77 736-36-87'},
-  {region:'regions',cityEn:'Chirchiq',cityRu:'Чирчик',cityUz:'Chirchiq',addrEn:'Amir Temur Street, 69',addrRu:'Улица Амира Тимура, 69',addrUz:"Amir Temur ko'chasi, 69",hours:'08:00–23:00',phone:'+998 77 798-88-79'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Fidokor Street, 40',addrRu:'Улица Фидокор, 40',addrUz:"Fidokor ko'chasi, 40",hours:'07:30–23:00',phone:'+998 78 150-18-34',lat:41.29538,lon:69.2711,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Uqchi Street, 5',addrRu:'Улица Укчи, 5',addrUz:"O'qchi ko'chasi, 5",hours:'08:00–23:00',phone:'+998 95 855-01-59',lat:41.31637,lon:69.24519,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Shota Rustaveli Street, 63',addrRu:'Улица Шота Руставели, 63',addrUz:"Shota Rustaveli ko'chasi, 63",hours:'07:30–23:00',phone:'+998 99 444-18-01',lat:41.27935,lon:69.24746,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Beruniy Avenue, 12',addrRu:'Проспект Беруни, 12',addrUz:"Beruniy ko'chasi, 12",hours:'08:00–23:00',phone:'+998 99 444-38-98',lat:41.3821,lon:69.24155,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Taras Shevchenko Street, 28',addrRu:'Улица Тараса Шевченко, 28',addrUz:"Taras Shevchenko ko'chasi, 28",hours:'07:30–23:00',phone:'+998 71 252-56-94',lat:41.29974,lon:69.27737,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Glinka Street, 46',addrRu:'Улица Глинки, 46',addrUz:"Glinka ko'chasi, 46",hours:'08:00–23:00',phone:'+998 77 391-58-50',lat:41.28578,lon:69.26277,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:"Buyuk Ipak Yo'li, 44",addrRu:'Массив Буюк Ипак Йули, 44',addrUz:"Buyuk Ipak yo'li, 44",hours:'07:30–23:00',phone:'+998 99 444-18-05',lat:41.30942,lon:69.29162,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Temur Malik Street, 3',addrRu:'Улица Тимура Малика, 3',addrUz:"Temur Malik ko'chasi, 3",hours:'08:00–23:00',phone:'+998 99 444-38-09',lat:41.3586,lon:69.33846,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:"Kichik Halqa Yo'li, 26",addrRu:'Малая кольцевая, 26',addrUz:"Kichik halqa yo'li, 26",hours:'08:00–23:00',phone:'+998 77 448-01-91',lat:41.26541,lon:69.24221,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Qatortol Street, 28',addrRu:'Улица Катартал, 28',addrUz:"Qatortol ko'chasi, 28",hours:'08:00–23:00',phone:'+998 95 144-00-54',lat:41.28155,lon:69.20158,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Sayohat Street, 2',addrRu:'Улица Саёхат, 2',addrUz:"Sayohat ko'chasi, 2",hours:'08:00–23:00',phone:'+998 99 370-11-01',lat:41.32512,lon:69.33948,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:"Oqqo'rg'on Street, 14A",addrRu:'Улица Аккурган, 14A',addrUz:"Oqqo'rg'on ko'chasi, 14A",hours:'07:30–23:00',phone:'+998 99 444-18-04',lat:41.32377,lon:69.30336,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Chimkent Street, 21',addrRu:'Улица Чимкент, 21',addrUz:"Chimkent ko'chasi, 21",hours:'08:00–23:00',phone:'+998 99 444-18-02',lat:41.30524,lon:69.27381,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Tepamasjid Street, 1',addrRu:'Улица Тепамасжид, 1',addrUz:"Tepamasjid ko'chasi, 1",hours:'08:00–23:00',phone:'+998 95 134-13-83',lat:41.34205,lon:69.33406,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Amir Temur Avenue, 72A',addrRu:'Проспект Амира Темура, 72A',addrUz:"Amir Temur shoh ko'chasi, 72A",hours:'08:00–23:00',phone:'+998 95 017-30-30',lat:41.31589,lon:69.28067,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Istiqbol Street, 18',addrRu:'Улица Истикбол, 18',addrUz:"Istiqbol ko'chasi, 18",hours:'08:00–23:00',phone:'+998 95 992-95-15',lat:41.30189,lon:69.28898,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Nodira Street 4, Riviera Mall',addrRu:'Улица Нодиры 4, ТРЦ Riviera',addrUz:"Nodira ko'chasi, 4, Riviera mall",hours:'08:00–23:00',phone:'+998 77 761-76-71',lat:41.2995,lon:69.2401,approx:true},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Qoratosh, 5A, Samarqand Darvoza',addrRu:'Каратош, 5A, Самарканд Дарвоза',addrUz:"Qoratosh, 5A, Samarqand Darvoza",hours:'08:00–23:00',phone:'+998 99 444-40-16',lat:41.31872,lon:69.23239,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Alisher Navoiy Avenue, 22',addrRu:'Проспект Алишера Навои, 22',addrUz:"Alisher Navoiy shoh ko'chasi, 22",hours:'08:00–23:00',phone:'+998 71 241-20-67',lat:41.2995,lon:69.2401,approx:true},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Bobur Street, 6',addrRu:'Улица Бабура, 6',addrUz:"Bobur ko'chasi, 6",hours:'08:00–23:00',phone:'+998 95 670-39-89',lat:41.2976,lon:69.24952,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Ahmad Donish Street, 80',addrRu:'Улица Ахмада Дониша, 80',addrUz:"Ahmad Donish ko'chasi, 80",hours:'08:00–23:00',phone:'+998 99 010-74-59',lat:41.36142,lon:69.28001,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Sayram Street, 26/14',addrRu:'Улица Сайрам, 26/14',addrUz:"Sayram ko'chasi, 26/14",hours:'08:00–23:00',phone:'+998 95 974-99-22',lat:41.33014,lon:69.32434,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Nuroniylar Street, 2',addrRu:'Улица Нуронийлар, 2',addrUz:"Nuroniylar ko'chasi, 2",hours:'08:00–23:00',phone:'+998 77 311-82-81',lat:41.2995,lon:69.2401,approx:true},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Amir Temur Avenue, 118A',addrRu:'Проспект Амира Темура, 118A',addrUz:"Amir Temur shoh ko'chasi, 118A",hours:'08:00–23:00',phone:'+998 77 311-82-84',lat:41.38224,lon:69.28994,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Bobur Street, 174',addrRu:'Улица Бабура, 174',addrUz:"Bobur ko'chasi, 174",hours:'10:00–23:00',phone:'+998 95 845-17-19',lat:41.30356,lon:69.24502,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Zargarlik Street, 10A',addrRu:'Улица Заргалик, 10A',addrUz:"Zargarlik ko'chasi, 10A",hours:'08:00–23:00',phone:'+998 95 124-43-41',lat:41.2645,lon:69.16679,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:"Kichik Beshyog'och Street, 124/1",addrRu:'Улица Кичик Бешагач, 124/1',addrUz:"Kichik Beshyog'och ko'chasi, 124/1",hours:'08:00–23:00',phone:'+998 77 798-88-97',lat:41.28689,lon:69.26261,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:"Oqqo'rg'on Street, 33",addrRu:'Улица Аккурган, 33',addrUz:"Oqqo'rg'on ko'chasi, 33",hours:'08:00–23:00',phone:'+998 95 150-15-50',lat:41.32999,lon:69.30493,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Yangi Sergeli Street',addrRu:'Улица Янги Сергели',addrUz:"Yangi Sergeli ko'chasi",hours:'08:00–23:00',phone:'+998 77 330-76-79',lat:41.23379,lon:69.21558,approx:false},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Botir Zokirov Street 7, Tashkent City Mall',addrRu:'Ботира Зокирова 7, ТРЦ Tashkent City Mall',addrUz:"Botir Zokirov ko'chasi, 7, Tashkent City Mall",hours:'10:00–23:00',phone:'+998 95 722-74-70',lat:41.31626,lon:69.25241,approx:false},
+  {region:'regions',cityEn:'Bukhara',cityRu:'Бухоро',cityUz:'Buxoro',addrEn:'Bahouddin Naqshband Street, 4',addrRu:'Улица Бахауддина Накшбанда, 4',addrUz:"Bahouddin Naqshband ko'chasi, 4",hours:'08:00–23:00',phone:'+998 95 795-25-21',lat:39.7747,lon:64.4286,approx:true},
+  {region:'regions',cityEn:'Andijan',cityRu:'Андижан',cityUz:'Andijon',addrEn:'Mashrab Street, 62B',addrRu:'Улица Машраба, 62B',addrUz:"Mashrab ko'chasi, 62B",hours:'08:00–23:00',phone:'+998 95 959-50-91',lat:40.75122,lon:72.34795,approx:false},
+  {region:'regions',cityEn:'Samarkand',cityRu:'Самарканд',cityUz:'Samarqand',addrEn:'Amir Temur Street, 24',addrRu:'Улица Амира Темура, 24',addrUz:"Amir Temur ko'chasi, 24",hours:'08:00–23:00',phone:'+998 77 736-36-87',lat:39.65272,lon:66.95655,approx:false},
+  {region:'regions',cityEn:'Chirchiq',cityRu:'Чирчик',cityUz:'Chirchiq',addrEn:'Amir Temur Street, 69',addrRu:'Улица Амира Тимура, 69',addrUz:"Amir Temur ko'chasi, 69",hours:'08:00–23:00',phone:'+998 77 798-88-79',lat:41.47511,lon:69.5804,approx:false},
 ];
 
 /* ================= render: shelves & dessert grid & explorer ================= */
@@ -993,24 +1709,62 @@ document.querySelectorAll('.loc-tabs .pill').forEach(btn=>{
 });
 locSearchEl.addEventListener('input', renderBranches);
 
-/* decorative map: cluster of dots for Tashkent + four outer pins for the regions */
-document.getElementById('map').innerHTML = `
-  <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <g stroke="#DDA463" stroke-width=".5" opacity=".18">
-      <line x1="0" y1="80" x2="400" y2="80"/><line x1="0" y1="160" x2="400" y2="160"/>
-      <line x1="0" y1="240" x2="400" y2="240"/><line x1="0" y1="320" x2="400" y2="320"/>
-      <line x1="80" y1="0" x2="80" y2="400"/><line x1="160" y1="0" x2="160" y2="400"/>
-      <line x1="240" y1="0" x2="240" y2="400"/><line x1="320" y1="0" x2="320" y2="400"/>
-    </g>
-    <path d="M204 176 C 150 220, 100 250, 60 320" fill="none" stroke="#DDA463" stroke-width="1.1" opacity=".4"/>
-    <path d="M204 176 C 250 220, 300 190, 330 120" fill="none" stroke="#DDA463" stroke-width="1.1" opacity=".4"/>
-    <path d="M204 176 C 180 130, 140 90, 90 70" fill="none" stroke="#DDA463" stroke-width="1.1" opacity=".4"/>
-  </svg>
-  <div class="pin big" style="left:49%;top:42%;"></div>
-  <div class="pin" style="left:15%;top:78%;"></div>
-  <div class="pin" style="left:80%;top:28%;"></div>
-  <div class="pin" style="left:22%;top:16%;"></div>
-`;
+/* ================= live map: real OSM tiles + geolocation + nearest branch ================= */
+let leafletMap, markersLayer, userMarker;
+function haversineKm(lat1,lon1,lat2,lon2){
+  const R=6371, toRad=d=>d*Math.PI/180;
+  const dLat=toRad(lat2-lat1), dLon=toRad(lon2-lon1);
+  const a=Math.sin(dLat/2)**2+Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLon/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+function branchPopupHtml(b){
+  const approx = b.approx ? ` <span style="opacity:.6">${T('loc_approx')}</span>` : '';
+  return `<b>${branchCity(b)}</b>${branchAddr(b)}${approx}<br>${b.hours}`;
+}
+function initMap(){
+  if(!window.L || !document.getElementById('leaflet-map')) return;
+  leafletMap = L.map('leaflet-map', {zoomControl:true, scrollWheelZoom:false}).setView([41.31,69.28], 6);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    maxZoom:19, subdomains:'abcd'
+  }).addTo(leafletMap);
+  markersLayer = L.layerGroup().addTo(leafletMap);
+  BRANCHES.forEach(b=>{
+    if(b.lat==null) return;
+    const icon = L.divIcon({className:'', html:'<div class="pin-dot"></div>', iconSize:[14,14], iconAnchor:[7,7]});
+    b._marker = L.marker([b.lat,b.lon], {icon}).addTo(markersLayer).bindPopup(branchPopupHtml(b));
+  });
+  const pts = BRANCHES.filter(b=>b.lat!=null).map(b=>[b.lat,b.lon]);
+  if(pts.length) leafletMap.fitBounds(L.latLngBounds(pts).pad(0.2));
+}
+function refreshPopups(){
+  BRANCHES.forEach(b=>{ if(b._marker) b._marker.setPopupContent(branchPopupHtml(b)); });
+}
+function locateMe(){
+  const statusEl = document.getElementById('loc-status');
+  statusEl.classList.add('show');
+  if(!navigator.geolocation){ statusEl.textContent = T('loc_unsupported'); return; }
+  statusEl.textContent = T('loc_locating');
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const lat = pos.coords.latitude, lon = pos.coords.longitude;
+    if(userMarker) leafletMap.removeLayer(userMarker);
+    const icon = L.divIcon({className:'', html:'<div class="pin-dot me"></div>', iconSize:[18,18], iconAnchor:[9,9]});
+    userMarker = L.marker([lat,lon], {icon, zIndexOffset:1000}).addTo(leafletMap);
+    let nearest=null, nearestDist=Infinity;
+    BRANCHES.forEach(b=>{
+      if(b.lat==null) return;
+      const d = haversineKm(lat,lon,b.lat,b.lon);
+      if(d<nearestDist){ nearestDist=d; nearest=b; }
+    });
+    if(nearest){
+      leafletMap.fitBounds(L.latLngBounds([[lat,lon],[nearest.lat,nearest.lon]]).pad(0.35));
+      nearest._marker.openPopup();
+      statusEl.innerHTML = `<b>${T('loc_nearest')}:</b> ${branchCity(nearest)}, ${branchAddr(nearest)} — ${nearestDist.toFixed(1)} ${T('loc_km_away')}`;
+    }
+  }, ()=>{ statusEl.textContent = T('loc_denied'); }, {enableHighAccuracy:true, timeout:10000});
+}
+document.getElementById('locate-btn').addEventListener('click', locateMe);
+initMap();
 
 /* ================= apply language ================= */
 function applyLang(lang){
@@ -1027,6 +1781,7 @@ function applyLang(lang){
   renderShelves();
   renderGrid();
   renderBranches();
+  if(typeof refreshPopups === 'function') refreshPopups();
 }
 document.querySelectorAll('.langsw button').forEach(btn=>{
   btn.addEventListener('click', ()=>applyLang(btn.dataset.lang));
