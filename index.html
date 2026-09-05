@@ -1,0 +1,1107 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BON! Café</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400..600&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --ivory:#F7F1E4;
+  --linen:#EFE3CD;
+  --espresso:#1D130E;
+  --espresso-2:#2A1C15;
+  --chocolate:#35211A;
+  --caramel:#B87A3D;
+  --caramel-2:#DDA463;
+  --burgundy:#6E2A38;
+  --ink:#241811;
+  --ink-soft:#6E5B4C;
+  --paper:#F7F1E4;
+  --paper-soft:#C9B49A;
+  --line:rgba(36,24,17,.14);
+  --line-dark:rgba(247,241,228,.16);
+  color-scheme:light;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;background:var(--ivory);color:var(--ink);
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  font-size:16px;line-height:1.6;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{
+  font-family:'Fraunces',Georgia,'Times New Roman',serif;
+  font-weight:500;margin:0;text-wrap:balance;letter-spacing:-.01em;
+}
+p{margin:0;}
+a{color:inherit;text-decoration:none;}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
+img,svg{display:block;max-width:100%;}
+::selection{background:var(--caramel);color:var(--ivory);}
+:focus-visible{outline:2px solid var(--caramel);outline-offset:3px;}
+
+.eyebrow{
+  font-size:.75rem;text-transform:uppercase;letter-spacing:.22em;
+  font-weight:600;color:var(--caramel);
+}
+.wrap{max-width:1360px;margin:0 auto;padding:0 clamp(1.25rem,4vw,4rem);}
+.dark{background:var(--espresso);color:var(--paper);}
+.dark .eyebrow{color:var(--caramel-2);}
+.dark .ink-soft{color:var(--paper-soft);}
+.ink-soft{color:var(--ink-soft);}
+
+/* ---------- grain ---------- */
+#grain{
+  position:fixed;inset:0;pointer-events:none;z-index:9990;opacity:.05;
+  mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  animation:grain 1.1s steps(4) infinite;
+}
+@keyframes grain{
+  0%{transform:translate(0,0);} 25%{transform:translate(-1%,1%);}
+  50%{transform:translate(1%,-1%);} 75%{transform:translate(-1%,-1%);}
+  100%{transform:translate(0,0);}
+}
+
+/* ---------- custom cursor ---------- */
+#cursor-dot,#cursor-ring{
+  position:fixed;top:0;left:0;pointer-events:none;z-index:9999;
+  border-radius:50%;transform:translate(-50%,-50%);
+}
+#cursor-dot{width:6px;height:6px;background:var(--ink);transition:background .3s;}
+#cursor-ring{
+  width:44px;height:44px;border:1px solid var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  transition:width .35s cubic-bezier(.16,1,.3,1),height .35s cubic-bezier(.16,1,.3,1),
+    border-color .35s,background .35s;
+}
+#cursor-ring.on-dark{border-color:var(--paper);}
+#cursor-ring.on-dark #cursor-label{color:var(--paper);}
+#cursor-label{
+  font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink);opacity:0;transition:opacity .25s;font-weight:600;
+}
+#cursor-ring.expand{width:96px;height:96px;background:rgba(184,122,61,.12);border-color:var(--caramel);}
+#cursor-ring.expand #cursor-label{opacity:1;}
+@media (hover:none),(pointer:coarse){
+  #cursor-dot,#cursor-ring{display:none;}
+}
+
+/* ---------- preloader ---------- */
+#preloader{
+  position:fixed;inset:0;background:var(--espresso);color:var(--paper);
+  z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1.1rem;transition:opacity .8s ease,visibility .8s;
+}
+#preloader.hide{opacity:0;visibility:hidden;pointer-events:none;}
+#preloader .mark{font-family:'Fraunces',serif;font-size:2.75rem;letter-spacing:-.01em;opacity:0;
+  animation:markIn 1s .15s forwards ease-out;}
+#preloader .sub{font-size:.7rem;letter-spacing:.32em;text-transform:uppercase;color:var(--paper-soft);
+  opacity:0;animation:subIn 1s .6s forwards ease-out;}
+#preloader .bar{width:120px;height:1px;background:var(--line-dark);overflow:hidden;margin-top:.4rem;}
+#preloader .bar i{display:block;height:100%;width:0%;background:var(--caramel);animation:load 1.6s .2s forwards cubic-bezier(.7,0,.3,1);}
+@keyframes markIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+@keyframes subIn{from{opacity:0;}to{opacity:1;}}
+@keyframes load{to{width:100%;}}
+
+/* ---------- nav ---------- */
+#nav{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.6rem clamp(1.25rem,4vw,3rem);
+  transition:padding .5s cubic-bezier(.16,1,.3,1),background .5s,box-shadow .5s;
+}
+#nav .brand{font-family:'Fraunces',serif;font-size:1.35rem;letter-spacing:-.01em;color:var(--paper);}
+#nav .links{display:flex;gap:2.1rem;list-style:none;margin:0;padding:0;}
+#nav .links a{
+  font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--paper-soft);
+  position:relative;padding-bottom:2px;
+}
+#nav .links a::after{
+  content:'';position:absolute;left:0;bottom:0;height:1px;width:0;background:var(--caramel-2);
+  transition:width .35s cubic-bezier(.16,1,.3,1);
+}
+#nav .links a:hover::after{width:100%;}
+#nav .links a:hover{color:var(--paper);}
+#nav .right{display:flex;align-items:center;gap:1.1rem;}
+#nav .ig{font-size:.78rem;color:var(--paper-soft);letter-spacing:.06em;}
+#nav .ig:hover{color:var(--paper);}
+#nav .cta{
+  font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--espresso);
+  background:var(--paper);padding:.65rem 1.3rem;border-radius:100px;font-weight:600;
+  transition:transform .3s cubic-bezier(.16,1,.3,1),background .3s;
+}
+#nav .cta:hover{background:var(--caramel-2);transform:translateY(-1px);}
+#nav.scrolled{
+  top:.9rem;left:50%;right:auto;transform:translateX(-50%);
+  width:min(960px,92vw);padding:.7rem 1.6rem;border-radius:100px;
+  background:rgba(29,19,14,.62);backdrop-filter:blur(16px) saturate(140%);
+  border:1px solid var(--line-dark);box-shadow:0 12px 40px rgba(0,0,0,.28);
+}
+.langsw{display:flex;gap:.2rem;font-size:.7rem;letter-spacing:.04em;font-weight:600;}
+.langsw button{padding:.35rem .55rem;border-radius:100px;color:var(--paper-soft);text-transform:uppercase;transition:color .25s,background .25s;}
+.langsw button.active{color:var(--espresso);background:var(--paper);}
+.langsw button:hover:not(.active){color:var(--paper);}
+@media (max-width:860px){
+  #nav .links{display:none;}
+  #nav.scrolled{width:min(420px,90vw);}
+}
+
+/* ---------- hero ---------- */
+#hero{
+  position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
+  background:
+    radial-gradient(ellipse 70% 55% at 76% 18%,rgba(221,164,99,.30),transparent 60%),
+    radial-gradient(ellipse 60% 45% at 15% 85%,rgba(110,42,56,.22),transparent 60%),
+    linear-gradient(180deg,#140D09 0%,#1D130E 46%,#241812 100%);
+  overflow:hidden;padding-bottom:clamp(2.5rem,6vw,4.5rem);
+}
+#hero-parallax{position:absolute;inset:-6%;will-change:transform;}
+.steam{position:absolute;border-radius:50%;filter:blur(60px);opacity:.5;}
+.steam.s1{width:36vw;height:36vw;top:-6%;right:6%;background:radial-gradient(circle,rgba(221,164,99,.35),transparent 70%);animation:drift 14s ease-in-out infinite;}
+.steam.s2{width:26vw;height:26vw;bottom:0%;left:2%;background:radial-gradient(circle,rgba(110,42,56,.3),transparent 70%);animation:drift 18s ease-in-out infinite reverse;}
+@keyframes drift{0%,100%{transform:translate(0,0);}50%{transform:translate(2%,4%);}}
+.hero-mark{position:absolute;top:clamp(6rem,14vw,9rem);left:0;right:0;display:flex;justify-content:center;pointer-events:none;}
+.hero-mark svg{width:min(80vw,620px);height:auto;opacity:.7;}
+.hero-copy{position:relative;z-index:3;}
+.hero-copy .eyebrow{color:var(--caramel-2);}
+h1.hero-title{
+  color:var(--paper);font-size:clamp(4.2rem,17vw,11.5rem);line-height:.86;letter-spacing:-.02em;
+  margin-top:.5rem;
+}
+.hero-sub{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:400;
+  color:var(--paper);font-size:clamp(1.35rem,3vw,2.1rem);margin-top:1rem;max-width:26ch;
+}
+.hero-desc{color:var(--paper-soft);font-size:1.02rem;margin-top:1.1rem;max-width:38ch;}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:1rem;margin-top:2.4rem;}
+.btn{
+  display:inline-flex;align-items:center;gap:.6rem;font-size:.76rem;letter-spacing:.12em;
+  text-transform:uppercase;font-weight:600;padding:1rem 1.7rem;border-radius:100px;
+  transition:transform .4s cubic-bezier(.16,1,.3,1),background .3s,color .3s,border-color .3s;
+}
+.btn-solid{background:var(--paper);color:var(--espresso);}
+.btn-solid:hover{background:var(--caramel-2);transform:translateY(-2px);}
+.btn-line{border:1px solid var(--line-dark);color:var(--paper);}
+.btn-line:hover{border-color:var(--paper);transform:translateY(-2px);}
+.btn .arrow{transition:transform .35s cubic-bezier(.16,1,.3,1);}
+.btn:hover .arrow{transform:translateX(4px);}
+.scroll-cue{
+  position:absolute;bottom:1.6rem;left:clamp(1.25rem,4vw,4rem);display:flex;align-items:center;gap:.7rem;
+  color:var(--paper-soft);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+}
+.scroll-cue i{width:1px;height:26px;background:var(--line-dark);position:relative;overflow:hidden;display:block;}
+.scroll-cue i::after{content:'';position:absolute;left:0;top:-100%;width:100%;height:100%;background:var(--caramel-2);animation:cue 2.2s ease-in-out infinite;}
+@keyframes cue{0%{top:-100%;}50%{top:0;}100%{top:100%;}}
+
+/* reveal on scroll */
+[data-reveal]{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
+[data-reveal].in{opacity:1;transform:translateY(0);}
+[data-reveal="scale"]{transform:scale(.94);}
+[data-reveal="scale"].in{transform:scale(1);}
+
+/* ---------- marquee ---------- */
+.marquee{padding:1.5rem 0;overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--linen);}
+.marquee .track{display:flex;width:max-content;gap:2.5rem;animation:mq 26s linear infinite;}
+.marquee span{
+  font-family:'Fraunces',serif;font-size:clamp(1.4rem,4vw,2.6rem);white-space:nowrap;color:var(--ink);
+  display:flex;align-items:center;gap:2.5rem;
+}
+.marquee span i{width:8px;height:8px;border-radius:50%;background:var(--caramel);display:inline-block;}
+@keyframes mq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* ---------- intro ---------- */
+#intro{padding:clamp(6rem,12vw,10rem) 0;}
+.intro-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(2rem,6vw,5rem);align-items:center;}
+.intro-grid h2{font-size:clamp(2.3rem,5.4vw,4rem);line-height:1.05;}
+.intro-grid p.lead{margin-top:1.6rem;font-size:1.15rem;color:var(--ink-soft);max-width:44ch;line-height:1.75;}
+.intro-stats{display:flex;gap:clamp(1.5rem,4vw,3rem);margin-top:2.5rem;flex-wrap:wrap;}
+.intro-stats div b{display:block;font-family:'Fraunces',serif;font-size:2rem;color:var(--burgundy);}
+.intro-stats div span{font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);}
+.panel{
+  position:relative;aspect-ratio:4/5;border-radius:6px;overflow:hidden;
+  background:
+    radial-gradient(ellipse at 30% 20%,rgba(184,122,61,.5),transparent 55%),
+    radial-gradient(ellipse at 80% 85%,rgba(110,42,56,.45),transparent 55%),
+    linear-gradient(160deg,#3B241B,#1D130E);
+}
+.panel svg{position:absolute;inset:0;width:100%;height:100%;opacity:.85;}
+.panel::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 90px rgba(0,0,0,.4);}
+
+/* ---------- shelves (coffee / bakery / breakfast / summer) ---------- */
+.shelf-section{padding:clamp(5rem,10vw,8rem) 0;position:relative;overflow:hidden;}
+.shelf-head{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;margin-bottom:2.6rem;}
+.shelf-head h2{font-size:clamp(3.2rem,10vw,7.5rem);line-height:.9;}
+.shelf-head p{max-width:34ch;font-size:1rem;}
+.shelf{display:flex;gap:1.4rem;overflow-x:auto;padding:.5rem clamp(1.25rem,4vw,4rem) 1.5rem;margin:0 calc(-1*clamp(1.25rem,4vw,4rem));scroll-snap-type:x proximity;scrollbar-width:none;}
+.shelf::-webkit-scrollbar{display:none;}
+.card{
+  scroll-snap-align:start;flex:0 0 auto;width:min(78vw,300px);
+  border-top:1px solid var(--line);padding-top:1.2rem;
+  transition:transform .5s cubic-bezier(.16,1,.3,1);
+}
+.dark .card{border-color:var(--line-dark);}
+.card:hover{transform:translateY(-6px) rotate(-.4deg);}
+.card .icon{width:52px;height:52px;color:var(--caramel);margin-bottom:1.3rem;}
+.dark .card .icon{color:var(--caramel-2);}
+.card .cat{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);}
+.dark .card .cat{color:var(--paper-soft);}
+.card h3{font-size:1.25rem;margin-top:.5rem;}
+.card p{font-size:.86rem;color:var(--ink-soft);margin-top:.5rem;line-height:1.5;}
+.dark .card p{color:var(--paper-soft);}
+.card .meta{display:flex;justify-content:space-between;align-items:baseline;margin-top:1.1rem;padding-top:1rem;border-top:1px dashed var(--line);}
+.dark .card .meta{border-color:var(--line-dark);}
+.card .price{font-family:'Fraunces',serif;font-size:1.15rem;font-variant-numeric:tabular-nums;}
+.card .vol{font-size:.72rem;color:var(--ink-soft);}
+.dark .card .vol{color:var(--paper-soft);}
+
+/* ---------- desserts (overlap) ---------- */
+#desserts{padding:clamp(5rem,10vw,8rem) 0;}
+.dessert-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1rem 1.2rem;margin-top:3rem;}
+.d-card{position:relative;border-radius:4px;padding:1.5rem 1.3rem;background:var(--espresso-2);border:1px solid var(--line-dark);}
+.d-card.big{grid-column:span 3;grid-row:span 2;padding:2.2rem;}
+.d-card.med{grid-column:span 3;}
+.d-card.small{grid-column:span 2;}
+.d-card .glyph{width:38px;height:38px;color:var(--caramel-2);margin-bottom:1rem;}
+.d-card.big .glyph{width:56px;height:56px;}
+.d-card h3{color:var(--paper);font-size:1.15rem;}
+.d-card.big h3{font-size:1.9rem;}
+.d-card p{color:var(--paper-soft);font-size:.82rem;margin-top:.5rem;line-height:1.5;}
+.d-card .meta{margin-top:1rem;display:flex;justify-content:space-between;color:var(--paper);font-size:.85rem;font-family:'Fraunces',serif;font-variant-numeric:tabular-nums;}
+@media (max-width:820px){
+  .dessert-grid{grid-template-columns:repeat(2,1fr);}
+  .d-card.big,.d-card.med,.d-card.small{grid-column:span 1;grid-row:auto;}
+}
+
+/* ---------- featured product ---------- */
+#featured{padding:clamp(6rem,14vw,11rem) 0;background:var(--linen);overflow:hidden;position:relative;}
+.feat-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(2rem,6vw,5rem);align-items:center;}
+.feat-grid .eyebrow{margin-bottom:.6rem;}
+.feat-grid h2{font-size:clamp(3rem,8vw,6rem);line-height:.92;color:var(--burgundy);}
+.feat-grid p.lead{margin-top:1.3rem;font-size:1.1rem;max-width:36ch;color:var(--ink-soft);}
+.feat-price{font-family:'Fraunces',serif;font-size:2rem;margin-top:1.6rem;font-variant-numeric:tabular-nums;}
+.feat-panel{aspect-ratio:1/1;border-radius:6px;position:relative;overflow:hidden;
+  background:radial-gradient(circle at 35% 30%,#8FA06A,transparent 55%),radial-gradient(circle at 70% 75%,#D9A15E,transparent 60%),linear-gradient(150deg,#EADFC5,#C9B586);}
+.feat-panel svg{position:absolute;inset:0;width:100%;height:100%;}
+
+/* ---------- summer ---------- */
+#summer{padding:clamp(5rem,10vw,8rem) 0;background:linear-gradient(180deg,#2A1C15 0%,#3E4A34 55%,#F2E7C9 100%);color:var(--paper);}
+#summer .shelf-head h2{color:var(--paper);}
+#summer .shelf-head p{color:var(--paper-soft);}
+#summer .card{border-color:var(--line-dark);}
+#summer .card .cat,#summer .card .vol{color:var(--paper-soft);}
+#summer .card h3,#summer .card .price{color:var(--paper);}
+#summer .card p{color:var(--paper-soft);}
+#summer .card .icon{color:#EAD98C;}
+#summer .card .meta{border-color:var(--line-dark);}
+
+/* ---------- menu explorer ---------- */
+#menu{padding:clamp(5rem,10vw,8rem) 0;}
+.menu-head{max-width:52ch;margin-bottom:2.5rem;}
+.menu-head h2{font-size:clamp(2.4rem,6vw,4rem);}
+.pills{position:sticky;top:5.2rem;z-index:50;display:flex;gap:.6rem;flex-wrap:wrap;padding:1rem 0 1.3rem;background:var(--ivory);box-shadow:0 1.3rem 1rem -1rem rgba(36,24,17,.08);margin-bottom:1.5rem;}
+.pill{
+  font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;padding:.6rem 1.1rem;
+  border:1px solid var(--line);border-radius:100px;color:var(--ink-soft);transition:all .3s;
+}
+.pill.active{background:var(--espresso);color:var(--paper);border-color:var(--espresso);}
+.pill:hover{border-color:var(--caramel);color:var(--ink);}
+.dark .pill{border-color:var(--line-dark);color:var(--paper-soft);}
+.dark .pill.active{background:var(--paper);color:var(--espresso);border-color:var(--paper);}
+.m-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:1.1rem;}
+.m-card{
+  grid-column:span 2;border:1px solid var(--line);border-radius:4px;padding:1.4rem;
+  transition:border-color .3s,transform .3s;
+}
+.m-card.wide{grid-column:span 3;}
+.m-card:hover{border-color:var(--caramel);transform:translateY(-3px);}
+.m-card .cat{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--caramel);}
+.m-card h3{font-size:1.08rem;margin-top:.45rem;}
+.m-card p{font-size:.82rem;color:var(--ink-soft);margin-top:.4rem;min-height:2.6em;}
+.m-card .meta{display:flex;justify-content:space-between;margin-top:.9rem;font-family:'Fraunces',serif;font-variant-numeric:tabular-nums;}
+.m-card .meta .vol{font-family:'Inter',sans-serif;font-size:.72rem;color:var(--ink-soft);align-self:center;}
+@media (max-width:900px){.m-grid{grid-template-columns:repeat(2,1fr);}.m-card,.m-card.wide{grid-column:span 1;}}
+
+/* ---------- atmosphere ---------- */
+#atmosphere{position:relative;height:100svh;overflow:hidden;}
+#atmo-panel{position:absolute;inset:-8%;
+  background:radial-gradient(ellipse 60% 50% at 25% 30%,rgba(184,122,61,.5),transparent 60%),
+  radial-gradient(ellipse 55% 45% at 80% 75%,rgba(110,42,56,.45),transparent 60%),
+  linear-gradient(180deg,#140D09,#231710);
+}
+#atmosphere .copy{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.6rem;}
+#atmosphere h2{color:var(--paper);font-size:clamp(2.2rem,6vw,4.2rem);}
+#atmosphere p{color:var(--paper-soft);letter-spacing:.04em;text-transform:uppercase;font-size:.85rem;}
+
+/* ---------- social ---------- */
+#social{padding:clamp(5rem,10vw,8rem) 0;background:var(--linen);}
+.social-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1.5rem;margin-bottom:3rem;}
+.social-head h2{font-size:clamp(2.4rem,6vw,4.2rem);}
+.ig-link{display:inline-flex;align-items:center;gap:.6rem;font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--ink);padding-bottom:.3rem;}
+.collage{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:70px;gap:.9rem;}
+.tile{border-radius:4px;position:relative;overflow:hidden;transition:transform .4s cubic-bezier(.16,1,.3,1);}
+.tile:hover{transform:scale(1.02) rotate(0deg) !important;z-index:2;}
+.tile:nth-child(1){grid-column:1/6;grid-row:1/6;transform:rotate(-1.2deg);background:linear-gradient(150deg,#3B241B,#B87A3D);}
+.tile:nth-child(2){grid-column:6/9;grid-row:1/4;transform:rotate(1.4deg);background:linear-gradient(150deg,#6E2A38,#DDA463);}
+.tile:nth-child(3){grid-column:9/13;grid-row:1/5;transform:rotate(-.8deg);background:linear-gradient(150deg,#35211A,#8FA06A);}
+.tile:nth-child(4){grid-column:6/10;grid-row:4/8;transform:rotate(-1deg);background:linear-gradient(150deg,#B87A3D,#F2E7C9);}
+.tile:nth-child(5){grid-column:1/6;grid-row:6/9;transform:rotate(.9deg);background:linear-gradient(150deg,#241812,#6E2A38);}
+.tile:nth-child(6){grid-column:10/13;grid-row:5/9;transform:rotate(1.1deg);background:linear-gradient(150deg,#2A1C15,#DDA463);}
+@media (max-width:760px){
+  .collage{grid-template-columns:repeat(6,1fr);grid-auto-rows:110px;}
+  .tile:nth-child(1){grid-column:1/4;grid-row:1/3;}
+  .tile:nth-child(2){grid-column:4/7;grid-row:1/2;}
+  .tile:nth-child(3){grid-column:4/7;grid-row:2/4;}
+  .tile:nth-child(4){grid-column:1/4;grid-row:3/5;}
+  .tile:nth-child(5){grid-column:1/7;grid-row:5/7;}
+  .tile:nth-child(6){display:none;}
+}
+
+/* ---------- location / branches ---------- */
+#location{padding:clamp(5rem,10vw,8rem) 0;}
+.loc-head{max-width:60ch;margin-bottom:2.6rem;}
+.loc-head h2{font-size:clamp(2.6rem,7vw,4.6rem);color:var(--paper);}
+.loc-body{display:grid;grid-template-columns:1.25fr .75fr;gap:clamp(2rem,5vw,3.5rem);align-items:start;}
+.loc-tabs{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;margin-bottom:1.2rem;}
+.loc-search{
+  flex:1;min-width:160px;background:transparent;border:1px solid var(--line-dark);border-radius:100px;
+  padding:.6rem 1.1rem;font-size:.82rem;color:var(--paper);
+}
+.loc-search::placeholder{color:var(--paper-soft);}
+.loc-list{max-height:480px;overflow-y:auto;padding-right:.5rem;}
+.loc-row{
+  display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;
+  padding:1rem 0;border-bottom:1px solid var(--line-dark);transition:opacity .2s;
+}
+.loc-row .loc-main{display:flex;flex-direction:column;gap:.15rem;}
+.loc-row .loc-city{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--caramel-2);}
+.loc-row .loc-addr{font-size:.95rem;color:var(--paper);}
+.loc-row .loc-meta{display:flex;align-items:center;gap:1.1rem;font-variant-numeric:tabular-nums;font-size:.8rem;color:var(--paper-soft);}
+.loc-row .loc-phone:hover{color:var(--paper);}
+.loc-row .loc-pin{width:30px;height:30px;border-radius:50%;border:1px solid var(--line-dark);display:flex;align-items:center;justify-content:center;color:var(--paper-soft);transition:border-color .3s,color .3s;flex:none;}
+.loc-row .loc-pin:hover{border-color:var(--caramel-2);color:var(--caramel-2);}
+.loc-note{margin-top:1rem;font-size:.78rem;color:var(--paper-soft);opacity:.7;}
+.map{position:relative;aspect-ratio:1/1;border-radius:6px;overflow:hidden;background:#140D09;border:1px solid var(--line-dark);}
+.map svg{position:absolute;inset:0;width:100%;height:100%;}
+.pin{position:absolute;width:14px;height:14px;}
+.pin::before,.pin::after{content:'';position:absolute;border-radius:50%;}
+.pin::before{inset:0;background:var(--caramel-2);}
+.pin::after{inset:-9px;border:1px solid var(--caramel-2);animation:pulse 2.4s ease-out infinite;}
+.pin.big{width:18px;height:18px;}
+.pin.big::before{background:var(--paper);}
+@keyframes pulse{0%{transform:scale(.6);opacity:.8;}100%{transform:scale(2.4);opacity:0;}}
+@media (max-width:900px){.loc-body{grid-template-columns:1fr;}.map{aspect-ratio:16/10;}}
+
+/* ---------- final cta ---------- */
+#finalcta{padding:clamp(7rem,16vw,12rem) 0;text-align:center;background:var(--espresso);}
+#finalcta h2{color:var(--paper);font-size:clamp(3rem,11vw,8rem);line-height:.92;}
+#finalcta .tagline{font-family:'Fraunces',serif;font-style:italic;color:var(--paper-soft);font-size:clamp(1.1rem,2.5vw,1.5rem);margin-top:1.2rem;}
+#finalcta .hero-ctas{justify-content:center;margin-top:2.8rem;}
+
+/* ---------- footer ---------- */
+footer{background:var(--espresso);padding:2.6rem 0 2.2rem;border-top:1px solid var(--line-dark);}
+.foot-grid{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.4rem;}
+.foot-grid .brand{font-family:'Fraunces',serif;color:var(--paper);font-size:1.2rem;}
+.foot-links{display:flex;gap:1.6rem;flex-wrap:wrap;}
+.foot-links a{font-size:.78rem;color:var(--paper-soft);}
+.foot-links a:hover{color:var(--paper);}
+.foot-bottom{margin-top:1.6rem;padding-top:1.4rem;border-top:1px solid var(--line-dark);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem;color:var(--paper-soft);font-size:.72rem;}
+
+@media (max-width:820px){
+  .intro-grid,.feat-grid{grid-template-columns:1fr;}
+  .panel,.feat-panel{aspect-ratio:16/10;}
+  .dessert-grid{gap:.8rem;}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;scroll-behavior:auto !important;}
+}
+</style>
+</head>
+<body>
+
+
+<div id="grain" aria-hidden="true"></div>
+<div id="cursor-dot" aria-hidden="true"></div>
+<div id="cursor-ring" aria-hidden="true"><span id="cursor-label"></span></div>
+
+<div id="preloader" aria-hidden="true">
+  <div class="mark">BON!</div>
+  <div class="sub">Café &middot; Pâtisserie &middot; Moments</div>
+  <div class="bar"><i></i></div>
+</div>
+
+<nav id="nav">
+  <a class="brand" href="#hero">BON!</a>
+  <ul class="links">
+    <li><a href="#intro" data-i18n="nav_about"></a></li>
+    <li><a href="#menu" data-i18n="nav_menu"></a></li>
+    <li><a href="#social" data-i18n="nav_moments"></a></li>
+    <li><a href="#location" data-i18n="nav_locations"></a></li>
+  </ul>
+  <div class="right">
+    <div class="langsw" role="group" aria-label="Language">
+      <button data-lang="uz">UZ</button><button data-lang="ru">RU</button><button data-lang="en">EN</button>
+    </div>
+    <a class="ig" href="https://www.instagram.com/boncafe_uz/" target="_blank" rel="noopener" data-cursor="explore">Instagram</a>
+    <a class="cta" href="#menu" data-cursor="explore" data-i18n="nav_cta"></a>
+  </div>
+</nav>
+
+<header id="hero">
+  <div id="hero-parallax">
+    <div class="steam s1"></div>
+    <div class="steam s2"></div>
+  </div>
+  <div class="hero-mark" aria-hidden="true">
+    <svg viewBox="0 0 400 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M60 40c-11 0-20 9-20 20v40c0 11 9 20 20 20h14c13 0 22-9 22-20v-6c0-8-5-14-12-16 6-3 10-9 10-16v-2c0-11-9-20-20-20H60z" stroke="#DDA463" stroke-width="1.2" opacity=".55"/>
+      <circle cx="200" cy="80" r="46" stroke="#DDA463" stroke-width="1.2" opacity=".35"/>
+      <path d="M300 46c9 8 14 19 14 32 0 24-20 44-44 44s-44-20-44-44c0-13 5-24 14-32" stroke="#DDA463" stroke-width="1.2" opacity=".35"/>
+    </svg>
+  </div>
+  <div class="wrap hero-copy">
+    <div class="eyebrow" data-i18n="hero_eyebrow"></div>
+    <h1 class="hero-title">BON!</h1>
+    <p class="hero-sub">Un moment de douceur.</p>
+    <p class="hero-desc" data-i18n="hero_desc"></p>
+    <div class="hero-ctas">
+      <a class="btn btn-solid" href="#intro" data-cursor="explore"><span data-i18n="hero_cta1"></span><span class="arrow">&rarr;</span></a>
+      <a class="btn btn-line" href="#menu" data-cursor="explore"><span data-i18n="hero_cta2"></span><span class="arrow">&rarr;</span></a>
+    </div>
+  </div>
+  <div class="scroll-cue"><i></i><span data-i18n="scroll_cue"></span></div>
+</header>
+
+<section class="marquee" aria-hidden="true">
+  <div class="track" id="marquee-track"></div>
+</section>
+
+<section id="intro">
+  <div class="wrap intro-grid">
+    <div data-reveal>
+      <div class="eyebrow" data-i18n="intro_eyebrow"></div>
+      <h2><span data-i18n="intro_h2a"></span><br><span data-i18n="intro_h2b"></span></h2>
+      <p class="lead" data-i18n="intro_lead"></p>
+      <div class="intro-stats">
+        <div><b>70</b><span data-i18n="stat1_label"></span></div>
+        <div><b>24</b><span data-i18n="stat2_label"></span></div>
+        <div><b>34</b><span data-i18n="stat3_label"></span></div>
+      </div>
+    </div>
+    <div class="panel" data-reveal="scale">
+      <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M150 320c0 40 20 70 50 70s50-30 50-70v-90h-100z" stroke="#F7F1E4" stroke-width="1.3" opacity=".5"/>
+        <path d="M170 230c-6-20 6-38 30-38s36 18 30 38" stroke="#F7F1E4" stroke-width="1.3" opacity=".4"/>
+        <path d="M190 190c-4-16 2-30 10-40M210 190c4-16-2-30-10-40" stroke="#DDA463" stroke-width="1.2" opacity=".5"/>
+        <circle cx="200" cy="330" r="120" stroke="#DDA463" stroke-width="1" opacity=".2"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="coffee" class="shelf-section dark">
+  <div class="wrap">
+    <div class="shelf-head" data-reveal>
+      <h2 data-i18n="coffee_h2"></h2>
+      <p class="ink-soft" data-i18n="coffee_p"></p>
+    </div>
+  </div>
+  <div class="shelf" id="coffee-shelf"></div>
+</section>
+
+<section id="bakery" class="shelf-section">
+  <div class="wrap">
+    <div class="shelf-head" data-reveal>
+      <h2><span data-i18n="bakery_h2a"></span><br><span data-i18n="bakery_h2b"></span></h2>
+      <p class="ink-soft" data-i18n="bakery_p"></p>
+    </div>
+  </div>
+  <div class="shelf" id="bakery-shelf"></div>
+</section>
+
+<section id="desserts" class="dark">
+  <div class="wrap">
+    <div class="shelf-head" data-reveal>
+      <h2><span data-i18n="desserts_h2a"></span><br><span data-i18n="desserts_h2b"></span></h2>
+      <p class="ink-soft" data-i18n="desserts_p"></p>
+    </div>
+    <div class="dessert-grid" id="dessert-grid"></div>
+  </div>
+</section>
+
+<section id="featured">
+  <div class="wrap feat-grid">
+    <div class="feat-panel" data-reveal="scale">
+      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="200" cy="200" r="140" fill="none" stroke="#35211A" stroke-width="1" opacity=".25"/>
+        <path d="M120 240c20 40 60 60 80 60s60-20 80-60c-20-50-50-80-80-80s-60 30-80 80z" fill="none" stroke="#35211A" stroke-width="1.3" opacity=".5"/>
+      </svg>
+    </div>
+    <div data-reveal>
+      <div class="eyebrow" data-i18n="featured_eyebrow"></div>
+      <h2>PISTACHE</h2>
+      <p class="lead" data-i18n="featured_lead"></p>
+      <div class="feat-price">45 000 сўм <span class="ink-soft" style="font-size:.9rem;font-family:'Inter',sans-serif;" data-i18n="per"></span></div>
+      <div class="hero-ctas" style="margin-top:2rem;">
+        <a class="btn btn-solid" style="background:var(--burgundy);color:var(--paper);" href="#menu" data-cursor="cta"><span data-i18n="featured_cta"></span><span class="arrow">&rarr;</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="breakfast" class="shelf-section">
+  <div class="wrap">
+    <div class="shelf-head" data-reveal>
+      <h2><span data-i18n="breakfast_h2a"></span><br><span data-i18n="breakfast_h2b"></span></h2>
+      <p class="ink-soft" data-i18n="breakfast_p"></p>
+    </div>
+  </div>
+  <div class="shelf" id="breakfast-shelf"></div>
+</section>
+
+<section id="summer" class="shelf-section">
+  <div class="wrap">
+    <div class="shelf-head" data-reveal>
+      <h2><span data-i18n="summer_h2a"></span><br><span data-i18n="summer_h2b"></span></h2>
+      <p class="ink-soft" data-i18n="summer_p"></p>
+    </div>
+  </div>
+  <div class="shelf" id="summer-shelf"></div>
+</section>
+
+<section id="menu">
+  <div class="wrap">
+    <div class="menu-head" data-reveal>
+      <div class="eyebrow" data-i18n="menu_eyebrow"></div>
+      <h2 data-i18n="menu_h2"></h2>
+    </div>
+    <div class="pills" id="pills"></div>
+    <div class="m-grid" id="m-grid"></div>
+  </div>
+</section>
+
+<section id="atmosphere">
+  <div id="atmo-panel"></div>
+  <div class="copy">
+    <p data-reveal data-i18n="atmo_p1"></p>
+    <h2 data-reveal data-i18n="atmo_h2"></h2>
+  </div>
+</section>
+
+<section id="social">
+  <div class="wrap">
+    <div class="social-head" data-reveal>
+      <h2><span data-i18n="social_h2a"></span><br><span data-i18n="social_h2b"></span></h2>
+      <a class="ig-link" href="https://www.instagram.com/boncafe_uz/" target="_blank" rel="noopener" data-cursor="explore">@boncafe_uz &nbsp;&rarr;</a>
+    </div>
+    <div class="collage" data-reveal>
+      <div class="tile"></div><div class="tile"></div><div class="tile"></div>
+      <div class="tile"></div><div class="tile"></div><div class="tile"></div>
+    </div>
+  </div>
+</section>
+
+<section id="location" class="dark">
+  <div class="wrap">
+    <div class="loc-head" data-reveal>
+      <div class="eyebrow" data-i18n="loc_eyebrow"></div>
+      <h2><span data-i18n="loc_h2a"></span><br><span data-i18n="loc_h2b"></span></h2>
+    </div>
+    <div class="loc-body">
+      <div data-reveal>
+        <div class="loc-tabs">
+          <button class="pill active" data-tab="tashkent" data-i18n="tab_tashkent"></button>
+          <button class="pill" data-tab="regions" data-i18n="tab_regions"></button>
+          <input class="loc-search" id="loc-search" type="text">
+        </div>
+        <div class="loc-list" id="loc-list"></div>
+        <p class="loc-note" data-i18n="loc_note"></p>
+      </div>
+      <div class="map" data-reveal="scale" id="map"></div>
+    </div>
+  </div>
+</section>
+
+<section id="finalcta">
+  <div class="wrap">
+    <h2 data-reveal><span data-i18n="final_h2a"></span><br><span data-i18n="final_h2b"></span></h2>
+    <p class="tagline" data-reveal data-i18n="final_tagline"></p>
+    <div class="hero-ctas">
+      <a class="btn btn-solid" href="https://www.google.com/maps/search/?api=1&query=BON!%20Cafe%2C%20Tashkent%2C%20Uzbekistan" target="_blank" rel="noopener" data-cursor="explore"><span data-i18n="cta_directions"></span><span class="arrow">&rarr;</span></a>
+      <a class="btn btn-line" href="#menu" data-cursor="explore"><span data-i18n="cta_menu"></span><span class="arrow">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="brand">BON!</div>
+      <div class="foot-links">
+        <a href="#intro" data-i18n="nav_about"></a><a href="#menu" data-i18n="nav_menu"></a><a href="#social" data-i18n="nav_moments"></a>
+        <a href="#location" data-i18n="nav_locations"></a>
+        <a href="https://www.instagram.com/boncafe_uz/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span data-i18n="foot_brand_line"></span>
+      <span data-i18n="foot_disclaimer"></span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+"use strict";
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const coarse = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+
+/* ================= i18n ================= */
+const I18N = {
+en:{
+  nav_about:'About',nav_menu:'Menu',nav_moments:'Moments',nav_locations:'Locations',nav_cta:'Menu',
+  hero_eyebrow:'34 locations across Uzbekistan',
+  hero_desc:'Coffee. Pastry. Breakfast. Moments worth remembering.',
+  hero_cta1:'Discover BON!',hero_cta2:'Explore Menu',scroll_cue:'Scroll to discover',
+  marquee:'BON! CAFÉ · COFFEE · PASTRY · BREAKFAST · DESSERT',
+  intro_eyebrow:'About BON!',intro_h2a:'A little pause',intro_h2b:'in the middle of life.',
+  intro_lead:'Mornings begin slow here — an espresso, a warm croissant, sunlight through the window. Afternoons drift into conversation over galettes and crêpes. Evenings settle over a slice of tarte and one more cup. From Tashkent to Andijan, Bukhara, Samarkand and Chirchiq, BON! gathers coffee, bakery, breakfast, salads and desserts under one quiet, unhurried philosophy.',
+  stat1_label:'Guest reviews',stat2_label:'Moments captured',stat3_label:'Locations',
+  coffee_h2:'COFFEE',coffee_p:'Espresso at the center of it all — roasted, pulled and poured the same unhurried way, every single cup.',
+  bakery_h2a:'BAKED WITH',bakery_h2b:'PATIENCE.',bakery_p:'Laminated by hand, proofed slowly, baked to order — the croissant case, reimagined chapter by chapter.',
+  desserts_h2a:'SWEET',desserts_h2b:'MOMENTS',desserts_p:'Nine desserts, one philosophy: fewer ingredients, better ones, finished properly.',
+  featured_eyebrow:'Featured · New',featured_lead:'A pistachio ganache mousse with a mandarin heart, glazed over a delicate thin base — the newest addition to the case.',featured_cta:'Taste It',per:'/ 100 g',
+  breakfast_h2a:'START',breakfast_h2b:'SLOW.',breakfast_p:'Eggs, oats, fruit and one warm croissant — mornings built to be lingered over, not rushed through.',
+  summer_h2a:'A SUMMER',summer_h2b:'STATE OF MIND',summer_p:'Matcha Uji, iced classics and one very good mojito — for the days that call for something colder.',
+  menu_eyebrow:'The Menu',menu_h2:'Twelve chapters, one café.',pill_all:'All',
+  cat_coffee:'Coffee',cat_croissants:'Croissants',cat_desserts:'Desserts',cat_breakfast:'Breakfast',
+  cat_summer:'Matcha & Summer',cat_sandwiches:'Sandwiches',cat_salads:'Salads',cat_bakery:'Bakery',
+  cat_crepes:'Crêpes',cat_galettes:'Galettes',cat_mains:'Main Courses',cat_juices:'Fresh Juices',
+  atmo_p1:'Come as you are.',atmo_h2:'Stay for the moment.',
+  social_h2a:'FOLLOW THE',social_h2b:'MOMENTS',
+  loc_eyebrow:'34 locations across Uzbekistan',loc_h2a:'FIND YOUR',loc_h2b:'BON!',
+  tab_tashkent:'Tashkent',tab_regions:'Regions',
+  loc_note:'Addresses, hours and phone numbers are listed as provided by BON! Café.',
+  final_h2a:'SEE YOU',final_h2b:'AT BON!',final_tagline:'One more coffee. One more moment.',
+  cta_directions:'Get Directions',cta_menu:'Explore Menu',
+  foot_brand_line:'BON! Café · 34 locations across Uzbekistan',
+  foot_disclaimer:'Menu, sizes & prices sourced from Yandex Eda delivery listing · dine-in may differ.',
+  cursor_view:'View',cursor_explore:'Explore',search_ph:'Search by street…',
+},
+ru:{
+  nav_about:'О нас',nav_menu:'Меню',nav_moments:'Моменты',nav_locations:'Филиалы',nav_cta:'Меню',
+  hero_eyebrow:'34 филиала по Узбекистану',
+  hero_desc:'Кофе. Выпечка. Завтраки. Моменты, которые запоминаются.',
+  hero_cta1:'Открыть BON!',hero_cta2:'Смотреть меню',scroll_cue:'Пролистайте вниз',
+  marquee:'BON! КАФЕ · КОФЕ · ВЫПЕЧКА · ЗАВТРАК · ДЕСЕРТ',
+  intro_eyebrow:'О BON!',intro_h2a:'Небольшая пауза',intro_h2b:'посреди жизни.',
+  intro_lead:'Утро здесь начинается неторопливо — эспрессо, тёплый круассан, солнце в окне. Дни превращаются в разговоры за галетами и крепами. Вечера — с кусочком тарта и ещё одной чашкой кофе. От Ташкента до Андижана, Бухары, Самарканда и Чирчика BON! объединяет кофе, выпечку, завтраки, салаты и десерты одной неторопливой философией.',
+  stat1_label:'Отзывов гостей',stat2_label:'Снятых моментов',stat3_label:'Филиалов',
+  coffee_h2:'КОФЕ',coffee_p:'Эспрессо — в центре всего: обжарено, сварено и подано одинаково неторопливо, чашка за чашкой.',
+  bakery_h2a:'ИСПЕЧЕНО С',bakery_h2b:'ТЕРПЕНИЕМ.',bakery_p:'Слоёное вручную, медленно расстоявшееся, выпекается на заказ — витрина круассанов, переосмысленная заново.',
+  desserts_h2a:'СЛАДКИЕ',desserts_h2b:'МОМЕНТЫ',desserts_p:'Девять десертов, одна философия: меньше ингредиентов, но лучше, и всё доведено до совершенства.',
+  featured_eyebrow:'Новинка',featured_lead:'Мусс с фисташковым ганашем, мандариновой сердцевиной и глазурью на тонком корже — новинка витрины.',featured_cta:'Попробовать',per:'/ 100 г',
+  breakfast_h2a:'НАЧНИТЕ',breakfast_h2b:'НЕТОРОПЛИВО.',breakfast_p:'Яйца, овсянка, фрукты и один тёплый круассан — утро, которое хочется растянуть, а не торопить.',
+  summer_h2a:'ЛЕТНЕЕ',summer_h2b:'НАСТРОЕНИЕ',summer_p:'Матча Удзи, ледяная классика и один очень хороший мохито — для дней, когда хочется чего-то прохладного.',
+  menu_eyebrow:'Меню',menu_h2:'Двенадцать глав, одно кафе.',pill_all:'Все',
+  cat_coffee:'Кофе',cat_croissants:'Круассаны',cat_desserts:'Десерты',cat_breakfast:'Завтраки',
+  cat_summer:'Матча и лето',cat_sandwiches:'Сэндвичи',cat_salads:'Салаты',cat_bakery:'Выпечка',
+  cat_crepes:'Крепы',cat_galettes:'Галеты',cat_mains:'Основные блюда',cat_juices:'Свежие соки',
+  atmo_p1:'Приходите такими, какие вы есть.',atmo_h2:'Останьтесь ради момента.',
+  social_h2a:'СЛЕДИТЕ ЗА',social_h2b:'МОМЕНТАМИ',
+  loc_eyebrow:'34 филиала по Узбекистану',loc_h2a:'НАЙДИТЕ СВОЙ',loc_h2b:'BON!',
+  tab_tashkent:'Ташкент',tab_regions:'Регионы',
+  loc_note:'Адреса, время работы и телефоны указаны по данным BON! Café.',
+  final_h2a:'ДО ВСТРЕЧИ',final_h2b:'В BON!',final_tagline:'Ещё одна чашка кофе. Ещё один момент.',
+  cta_directions:'Проложить маршрут',cta_menu:'Смотреть меню',
+  foot_brand_line:'BON! Café · 34 филиала по Узбекистану',
+  foot_disclaimer:'Меню, объёмы и цены — из листинга доставки Яндекс Еда · в кафе могут отличаться.',
+  cursor_view:'Смотреть',cursor_explore:'Открыть',search_ph:'Поиск по улице…',
+},
+uz:{
+  nav_about:'Biz haqimizda',nav_menu:'Menyu',nav_moments:'Lahzalar',nav_locations:'Filiallar',nav_cta:'Menyu',
+  hero_eyebrow:"O'zbekiston bo'ylab 34 ta filial",
+  hero_desc:"Qahva. Pishiriqlar. Nonushta. Esda qoladigan lahzalar.",
+  hero_cta1:"BON!ni kashf eting",hero_cta2:'Menyuni ko’rish',scroll_cue:"Pastga o'ting",
+  marquee:'BON! KAFE · QAHVA · PISHIRIQLAR · NONUSHTA · DESERT',
+  intro_eyebrow:'BON! haqida',intro_h2a:'Hayot davomida',intro_h2b:'kichik bir tanaffus.',
+  intro_lead:"Bu yerda tong sekin boshlanadi — espresso, issiq kruassan, derazadan tushayotgan quyosh nuri. Kunlar galet va kreplar ustida suhbatlarga aylanadi. Kechqurunlar esa bir bo'lak tart va yana bir chashka qahva bilan yakunlanadi. Toshkentdan Andijon, Buxoro, Samarqand va Chirchiqqacha — BON! qahva, pishiriqlar, nonushta, salat va desertlarni bitta shoshilmas falsafa ostida jamlaydi.",
+  stat1_label:'Mehmon sharhlari',stat2_label:'Suratga olingan lahzalar',stat3_label:'Filiallar',
+  coffee_h2:'QAHVA',coffee_p:'Espresso — hammasining markazida: har bir chashka bir xil shoshilmasdan qovuriladi, damlanadi va quyiladi.',
+  bakery_h2a:'SABR BILAN',bakery_h2b:'PISHIRILGAN.',bakery_p:"Qo'lda qatlanadi, sekin xamirturush bosqichidan o'tadi, buyurtmaga ko'ra pishiriladi — kruassanlar vitrinasi qaytadan yaratildi.",
+  desserts_h2a:'SHIRIN',desserts_h2b:'LAHZALAR',desserts_p:"To'qqizta desert, bitta falsafa: kamroq, ammo sifatliroq ingredientlar va oxirigacha puxta ishlangan natija.",
+  featured_eyebrow:'Yangilik',featured_lead:"Pista ganashi mussi, mandarin yurakchasi va yupqa asos ustidan glazur bilan qoplangan — vitrinamizning eng yangi mahsuloti.",featured_cta:"Tatib ko'ring",per:'/ 100 g',
+  breakfast_h2a:'SHOSHILMASDAN',breakfast_h2b:'BOSHLANG.',breakfast_p:"Tuxum, suli botqa, meva va bitta issiq kruassan — shoshilmasdan, huzur qilib o'tkaziladigan tong uchun.",
+  summer_h2a:'YOZGI',summer_h2b:'KAYFIYAT',summer_p:"Matcha Uji, muzli klassika va juda mazali moxito — biroz salqinroq narsa xohlagan kunlar uchun.",
+  menu_eyebrow:'Menyu',menu_h2:"O'n ikki bob, bitta kafe.",pill_all:'Barchasi',
+  cat_coffee:'Qahva',cat_croissants:'Kruassanlar',cat_desserts:'Desertlar',cat_breakfast:'Nonushtalar',
+  cat_summer:'Matcha va yoz',cat_sandwiches:'Sendvichlar',cat_salads:'Salatlar',cat_bakery:'Pishiriqlar',
+  cat_crepes:'Kreplar',cat_galettes:'Galetlar',cat_mains:'Asosiy taomlar',cat_juices:'Yangi sharbatlar',
+  atmo_p1:"Qanday bo'lsangiz, shundayligicha keling.",atmo_h2:'Lahza uchun qoling.',
+  social_h2a:'LAHZALARNI',social_h2b:'KUZATIB BORING',
+  loc_eyebrow:"O'zbekiston bo'ylab 34 ta filial",loc_h2a:"O'ZINGIZGA YAQIN",loc_h2b:"BON!NI TOPING",
+  tab_tashkent:'Toshkent',tab_regions:'Viloyatlar',
+  loc_note:"Manzillar, ish vaqti va telefon raqamlari BON! Café tomonidan taqdim etilgan ma'lumotlar asosida.",
+  final_h2a:"BON!DA",final_h2b:"KO'RISHGUNCHA",final_tagline:'Yana bir chashka qahva. Yana bir lahza.',
+  cta_directions:"Yo'nalishni ko'rish",cta_menu:'Menyuni ko’rish',
+  foot_brand_line:"BON! Café · O'zbekiston bo'ylab 34 ta filial",
+  foot_disclaimer:"Menyu, hajm va narxlar Yandex Eda yetkazib berish varag'idan olingan · kafeda farq qilishi mumkin.",
+  cursor_view:"Ko'rish",cursor_explore:'Ochish',search_ph:"Ko'cha bo'yicha qidirish…",
+},
+};
+let LANG = localStorage.getItem('bonLang') || 'uz';
+if(!I18N[LANG]) LANG = 'uz';
+
+/* ================= icons ================= */
+const ICONS = {
+  cup:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 24h30v18a10 10 0 0 1-10 10H24a10 10 0 0 1-10-10V24z"/><path d="M44 28h4a6 6 0 0 1 0 12h-4"/><path d="M20 18c1-3 3-4 3-7M28 18c1-3 3-4 3-7M36 18c1-3 3-4 3-7" stroke-linecap="round"/></svg>`,
+  croissant:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 40c4-16 16-28 30-28 4 10 2 20-6 26 8-2 16 2 20 10-10 8-24 10-34 4-6-3-9-7-10-12z"/><path d="M20 30c4 2 8 6 10 12M30 22c4 3 7 8 8 14" stroke-linecap="round"/></svg>`,
+  dessert:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M10 26h44l-4 8H14z"/><path d="M14 34l3 20a4 4 0 0 0 4 4h22a4 4 0 0 0 4-4l3-20"/><path d="M22 26c0-8 4-14 10-14s10 6 10 14" /></svg>`,
+  leaf:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 44C12 24 30 12 50 12c0 20-18 38-38 38z"/><path d="M16 46C24 34 32 26 48 16" stroke-linecap="round"/></svg>`,
+  bread:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 34c0-12 10-20 24-20s24 8 24 20-6 20-24 20S8 46 8 34z"/><path d="M20 26c3 4 3 10 0 16M32 24c3 5 3 12 0 18M44 26c3 4 3 10 0 16" stroke-linecap="round"/></svg>`,
+  bowl:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 30h48a24 20 0 0 1-48 0z"/><path d="M20 30c1-6 5-10 12-10s11 4 12 10" /></svg>`,
+  glass:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M18 14h28l-4 36a4 4 0 0 1-4 4H26a4 4 0 0 1-4-4z"/><path d="M20 24h24" /></svg>`,
+  salad:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><ellipse cx="32" cy="42" rx="24" ry="10"/><path d="M14 38c2-10 8-22 18-26M32 12c8 4 14 16 16 26" stroke-linecap="round"/></svg>`,
+  sandwich:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 30l24-16 24 16z"/><path d="M8 30v6c0 4 4 8 24 8s24-4 24-8v-6" /><path d="M8 30h48" /></svg>`,
+  pin:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.4"/></svg>`,
+};
+function icon(name){return ICONS[name]||ICONS.cup;}
+
+/* ================= menu data (source: Yandex Eda listing, BON! Andijan, Mashraba 62B) ================= */
+const MENU = [
+  {cat:'coffee',icon:'cup',price:23000,vol:'250 ml',nameEn:'Americano 250ml',nameRu:'Американо 250мл',nameUz:'Amerikano 250ml',descEn:'One shot of espresso and hot water.',descRu:'Один шот эспрессо и горячая вода.',descUz:'Bir shot espresso va issiq suv.'},
+  {cat:'coffee',icon:'cup',price:26000,vol:'350 ml',nameEn:'Americano 350ml',nameRu:'Американо 350мл',nameUz:'Amerikano 350ml',descEn:'Two shots of espresso and hot water.',descRu:'Два шота эспрессо и горячая вода.',descUz:'Ikki shot espresso va issiq suv.'},
+  {cat:'coffee',icon:'cup',price:27000,vol:'250 ml',nameEn:'Cappuccino 250ml',nameRu:'Капучино 250мл',nameUz:'Kapuchino 250ml',descEn:'One shot of espresso and steamed milk foam.',descRu:'Один шот эспрессо и взбитое пенное молоко.',descUz:"Bir shot espresso va ko'pirtirilgan sut ko'pigi."},
+  {cat:'coffee',icon:'cup',price:33000,vol:'350 ml',nameEn:'Cappuccino 350ml',nameRu:'Капучино 350мл',nameUz:'Kapuchino 350ml',descEn:'Two shots of espresso and steamed milk foam.',descRu:'Два шота эспрессо и взбитое пенное молоко.',descUz:"Ikki shot espresso va ko'pirtirilgan sut ko'pigi."},
+  {cat:'coffee',icon:'cup',price:29000,vol:'300 ml',nameEn:'Latte 300ml',nameRu:'Латте 300мл',nameUz:'Latte 300ml',descEn:'One shot of espresso and steamed milk foam.',descRu:'Один шот эспрессо и взбитое пенное молоко.',descUz:"Bir shot espresso va ko'pirtirilgan sut ko'pigi."},
+  {cat:'coffee',icon:'cup',price:45000,vol:'300 ml',nameEn:'Raf',nameRu:'Раф',nameUz:'Raf',descEn:'Espresso, cream, syrup and milk.',descRu:'Один шот эспрессо, сливки, сироп, молоко.',descUz:"Bir shot espresso, qaymoq, sirop, sut."},
+  {cat:'coffee',icon:'cup',price:32000,vol:'250 ml',nameEn:'Flat White',nameRu:'Флэт уайт',nameUz:'Flet Uayt',descEn:'A double shot of coffee with milk.',descRu:'Двойная порция кофе, молоко.',descUz:"Qo'sh porsiya kofe, sut."},
+  {cat:'coffee',icon:'cup',price:25000,vol:'50 ml',nameEn:'Espresso Doppio',nameRu:'Эспрессо двойной',nameUz:'Espresso dopio',descEn:'A double shot of espresso.',descRu:'Двойная порция кофе.',descUz:"Qo'sh porsiya kofe."},
+
+  {cat:'croissants',icon:'croissant',price:22000,vol:'80 g',nameEn:'French Croissant',nameRu:'Круассан французский',nameUz:'Fransuz kruassani',descEn:'The classic butter croissant, crisp and laminated.',descRu:'Классический французский круассан на сливочном масле с хрустящей корочкой.',descUz:"Sariyog'da tayyorlangan, xrustik qatlamli klassik fransuz kruassani."},
+  {cat:'croissants',icon:'croissant',price:32000,vol:'90 g',nameEn:'Almond Croissant',nameRu:'Круассан миндальный',nameUz:'Bodom kruassani',descEn:'Filled with almond cream, topped with almond flakes.',descRu:'Круассан с миндальным кремом, посыпан миндальными лепестками.',descUz:"Bodom kremi bilan to'ldirilgan, bodom yaproqchalari sepilgan kruassan."},
+  {cat:'croissants',icon:'croissant',price:28000,vol:'90 g',nameEn:'Milk Chocolate Croissant',nameRu:'Круассан с молочным шоколадом',nameUz:'Sut shokoladli kruassan',descEn:'Butter croissant filled with natural chocolate.',descRu:'Слоеный круассан на сливочном масле с начинкой из натурального шоколада.',descUz:"Tabiiy shokolad ichlik bilan sariyog'li qatlamli kruassan."},
+  {cat:'croissants',icon:'croissant',price:36000,vol:'80 g',nameEn:'Pecan Croissant',nameRu:'Круассан с пеканом',nameUz:'Pekanli kruassan',descEn:'Frangipane cream with walnut and pecan.',descRu:'Круассан с начинкой из крема франжипан с добавлением грецкого ореха и пекана.',descUz:"Yong'oq va pekan qo'shilgan franjipan krem bilan to'ldirilgan kruassan."},
+  {cat:'croissants',icon:'croissant',price:25000,vol:'80 g',nameEn:'Cheese Croissant',nameRu:'Круассан сырный',nameUz:'Pishloqli kruassan',descEn:'Laminated dough with a savoury cheese filling.',descRu:'Слоёный круассан с ароматной сырной начинкой.',descUz:"Xushbo'y pishloq ichlik bilan qatlamli kruassan."},
+  {cat:'croissants',icon:'bread',price:25000,vol:'420 g',nameEn:'Artisan Bread with Malt',nameRu:'Артизанский хлеб с солодом',nameUz:'Achitqili non (solod bilan)',descEn:'Rye artisan bread with flax and sunflower seeds.',descRu:'Артизанский ржаной хлеб с семенами льна и подсолнечника.',descUz:"Zig'ir va kungaboqar urug'li, zich va foydali javdar noni."},
+
+  {cat:'desserts',icon:'dessert',price:41000,vol:'150 g',nameEn:'Tiramisu',nameRu:'Тирамису',nameUz:'Tiramisu',descEn:'An airy coffee-and-cream dessert.',descRu:'Воздушный кофейно-сливочный десерт.',descUz:"Havodek yengil, kofe-qaymoqli desert."},
+  {cat:'desserts',icon:'dessert',price:38000,vol:'120 g',nameEn:'Opera',nameRu:'Опера',nameUz:'Opera',descEn:'Layered sponge with coffee cream and chocolate glaze.',descRu:'Французский десерт из слоёв бисквита с кофейным кремом и шоколадной глазурью.',descUz:"Kofe kremi va shokolad glazuri bilan qatlangan bisqvit asosidagi fransuz deserti."},
+  {cat:'desserts',icon:'dessert',price:48000,vol:'95 g',nameEn:'Three Chocolate Mousse',nameRu:'Мусс Три шоколада',nameUz:'Uch shokoladli muss',descEn:'A delicate dessert with three kinds of chocolate on an almond base.',descRu:'Нежный десерт с тремя видами шоколада на миндальной основе.',descUz:"Bodom asosida uch xil shokoladdan tayyorlangan nafis desert."},
+  {cat:'desserts',icon:'dessert',price:29000,vol:'110 g',nameEn:'Medovik',nameRu:'Медовик',nameUz:'Medovik',descEn:'Classic honey cake with soft cream.',descRu:'Классическое пирожное с мёдом и нежным сливочным кремом.',descUz:"Asal va nafis qaymoqli krem bilan tayyorlangan klassik pirojnoye."},
+  {cat:'desserts',icon:'dessert',price:30000,vol:'110 g',nameEn:'Lemon Meringue',nameRu:'Лимонная меренга',nameUz:'Limonli beza',descEn:'Butter, egg, sugar, lemon juice and vanilla.',descRu:'Мука высшего сорта, масло сливочное, яйцо, сахар, лимонный сок, ванилин.',descUz:"Oliy nav un, sariyog', tuxum, shakar, limon sharbati, vanil."},
+  {cat:'desserts',icon:'dessert',price:29000,vol:'120 g',nameEn:'Airy Cheesecake',nameRu:'Чизкейк воздушный',nameUz:'Havodor chizkeyk',descEn:'Almond flour base with cream and cream cheese.',descRu:'Основа из миндальной муки со сливками и Cream Cheese.',descUz:"Bodom uni asosida qaymoq va Cream Cheese bilan."},
+  {cat:'desserts',icon:'dessert',price:41000,vol:'115 g',nameEn:'Chocolate Brownie',nameRu:'Шоколадный Брауни',nameUz:'Shokoladli brauni',descEn:'Dark chocolate brownie with walnuts.',descRu:'Брауни из натурального тёмного шоколада и грецкого ореха.',descUz:"Tabiiy qora shokolad va yong'oqdan tayyorlangan brauni."},
+  {cat:'desserts',icon:'dessert',price:34000,vol:'90 g',nameEn:'Éclair, Salted Caramel',nameRu:'Эклер Солёная карамель',nameUz:'Ekler (tuzli karamel)',descEn:'Choux pastry with salted caramel custard.',descRu:'Заварное тесто с лёгким заварным кремом и карамелью.',descUz:"Yengil zavarnoy xamir va tuzli karamelli krem bilan an'anaviy fransuz pirojnoyesi."},
+  {cat:'desserts',icon:'dessert',price:35000,vol:'105 g',nameEn:'Mango Tart',nameRu:'Тарт Манго',nameUz:'Mango tart',descEn:'Shortcrust tart with mango-passionfruit cream, coconut and almond.',descRu:'Песочный тарт с кремовой начинкой на основе манго и маракуйи, кокосом и миндалём.',descUz:"Mango-marakuya kremi, kokos qirindisi va bodom bilan qumli tart."},
+
+  {cat:'breakfast',icon:'bowl',price:59000,vol:'278 g',nameEn:'Classic BON! Breakfast',nameRu:'Завтрак классический Bon!',nameUz:'Klassik Bon! nonushtasi',descEn:'Two fried eggs on artisan bread, roasted tomato, mushroom and mix-salad.',descRu:'Два жареных яйца на артизанском хлебе с томатом, грибами и микс-салатом.',descUz:"Artizan nonda ikkita qovurilgan tuxum, pomidor, qo'ziqorin va aralash salat bilan."},
+  {cat:'breakfast',icon:'bowl',price:97000,vol:'275 g',nameEn:'Continental Breakfast',nameRu:'Завтрак континентальный',nameUz:'Kontinental nonushta',descEn:'Croissant, avocado, Brie, smoked salmon, scramble, cherry tomato.',descRu:'Круассан, авокадо, сыр Brie, копчёный лосось, скрембл, томаты черри.',descUz:"Kruassan, avokado, Brie pishlog'i, dudlangan losos, skrembl, cherri pomidor."},
+  {cat:'breakfast',icon:'croissant',price:95000,vol:'240 g',nameEn:'Salmon Croissant Scramble',nameRu:'Скрэмбл с лососем в круассане',nameUz:'Kruassanda losos skrembli',descEn:'Croissant with smoked salmon, scrambled eggs and pesto.',descRu:'Круассан с копчёным лососем, яйцами скрэмбл и соусом Pesto.',descUz:"Dudlangan losos, skrembl tuxum va pesto sousi bilan kruassan."},
+  {cat:'breakfast',icon:'bowl',price:43000,vol:'341 g',nameEn:'Oat Porridge with Fruit',nameRu:'Каша овсянная с фруктами',nameUz:'Mevali suli botqa',descEn:'Oats with orange and banana.',descRu:'Овсяная каша в сочетании с дольками апельсина и банана.',descUz:"Apelsin va banan bo'laklari qo'shilgan suli botqasi."},
+  {cat:'breakfast',icon:'bowl',price:47000,vol:'270 g',nameEn:'Chia Pudding',nameRu:'Пуддинг чиа',nameUz:'Chia puding',descEn:'Chia in coconut milk with mango purée and seasonal fruit.',descRu:'Семена чиа на кокосовом молоке с манговым пюре и сезонными фруктами.',descUz:"Kokos sutida chia urug'i, mango pyuresi va mavsumiy mevalar bilan."},
+  {cat:'breakfast',icon:'salad',price:45000,vol:'250 g',nameEn:'Fruit Salad',nameRu:'Фруктовый салат',nameUz:'Mevali salat',descEn:'Banana, kiwi, apple, orange, blueberry, strawberry.',descRu:'Свежие фрукты: банан, киви, яблоко, апельсин, голубика, клубника.',descUz:"Yangi mevalar: banan, kivi, olma, apelsin, ko'k qorag'at, qulupnay."},
+
+  {cat:'summer',icon:'leaf',price:42000,vol:'250 ml',nameEn:'Matcha Uji Latte',nameRu:'Матча Удзи латте',nameUz:'Matcha Uji latte',descEn:'Milk and matcha.',descRu:'Молоко, матча.',descUz:'Sut, matcha.'},
+  {cat:'summer',icon:'leaf',price:55000,vol:'300 ml',nameEn:'Matcha Uji Strawberry',nameRu:'Матча Удзи клубника',nameUz:'Matcha Uji qulupnay',descEn:'Milk, strawberry jam and matcha.',descRu:'Молоко, клубничный джем, матча.',descUz:'Sut, qulupnay jem, matcha.'},
+  {cat:'summer',icon:'leaf',price:52000,vol:'300 ml',nameEn:'Matcha Uji Passion Fruit',nameRu:'Матча Удзи маракуйя',nameUz:'Matcha Uji marakuya',descEn:'Coconut milk, matcha and passion fruit jam.',descRu:'Кокосовое молоко, матча, джем маракуйя.',descUz:'Kokos suti, matcha, marakuya jemi.'},
+  {cat:'summer',icon:'leaf',price:68000,vol:'300 ml',nameEn:'Matcha Bumble',nameRu:'Матча бамбл',nameUz:'Matcha Bambl',descEn:'Fresh orange juice with matcha.',descRu:'Апельсиновый фреш с матчей.',descUz:'Matcha bilan yangi siqilgan apelsin sharbati.'},
+  {cat:'summer',icon:'glass',price:34000,vol:'450 ml',nameEn:'Iced Americano',nameRu:'Айс американо',nameUz:'Ays Amerikano',descEn:'Cold coffee drink.',descRu:'Холодный кофейный напиток.',descUz:'Sovuq kofe ichimligi.'},
+  {cat:'summer',icon:'glass',price:42000,vol:'450 ml',nameEn:'Iced Cappuccino',nameRu:'Айс капучино',nameUz:'Ays Kapuchino',descEn:'Cold coffee drink with milk.',descRu:'Холодный кофейный напиток с молоком.',descUz:'Sut bilan sovuq kofe ichimligi.'},
+  {cat:'summer',icon:'glass',price:40000,vol:'450 ml',nameEn:'Iced Latte',nameRu:'Айс латте',nameUz:'Ays Latte',descEn:'Cold coffee drink with milk.',descRu:'Холодный кофейный напиток с молоком.',descUz:'Sut bilan sovuq kofe ichimligi.'},
+  {cat:'summer',icon:'glass',price:39000,vol:'450 ml',nameEn:'Mojito',nameRu:'Мохито',nameUz:'Moxito',descEn:'Classic mojito with lime and mint.',descRu:'Классический мохито с лаймом и мятой.',descUz:'Laym va yalpiz bilan klassik moxito.'},
+
+  {cat:'sandwiches',icon:'sandwich',price:61000,vol:'447 g',nameEn:'Chicken Club Sandwich',nameRu:'Куриный клаб-сэндвич',nameUz:'Tovuqli klab-sendvich',descEn:'Chicken, fried egg, cucumber, tomato, Gouda, Caesar sauce.',descRu:'Куриное филе, жареное яйцо, огурцы, томаты, сыр Gouda, соус Caesar.',descUz:"Tovuq fileti, qovurilgan tuxum, bodring, pomidor, Gouda pishlog'i, Caesar sousi."},
+  {cat:'sandwiches',icon:'croissant',price:50000,vol:'180 g',nameEn:'Turkey Croissant',nameRu:'Круассан с индейкой',nameUz:'Kurkali kruassan',descEn:'Smoked turkey, Gouda, cucumber, iceberg, pesto.',descRu:'Копчёная индейка, сыр Gouda, огурец, салат айсберг, соус Pesto.',descUz:"Dudlangan kurka go'shti, Gouda pishlog'i, bodring, aysberg salat, pesto sousi."},
+  {cat:'sandwiches',icon:'croissant',price:85000,vol:'120 g',nameEn:'Salmon Croissant',nameRu:'Круассан с копчёным лососем',nameUz:'Dudlangan lososli kruassan',descEn:'Smoked salmon, cream cheese, arugula, sun-dried tomato.',descRu:'Копчёный лосось, Cream Cheese, руккола, вяленые томаты.',descUz:"Dudlangan losos, Cream Cheese, ruккola, quritilgan pomidor."},
+  {cat:'sandwiches',icon:'sandwich',price:50000,vol:'250 g',nameEn:'Chicken Wrap',nameRu:'Куриный врап',nameUz:'Tovuqli vrap',descEn:'Chicken fillet, carrot, bell pepper, iceberg, Caesar sauce.',descRu:'Куриное филе, морковь, болгарский перец, салат айсберг, соус Caesar.',descUz:"Tovuq fileti, sabzi, bolgar qalampiri, aysberg salat, Caesar sousi."},
+
+  {cat:'salads',icon:'salad',price:69000,vol:'285 g',nameEn:'Caesar Salad',nameRu:'Салат Цезарь',nameUz:'Sezar salati',descEn:'Chicken, iceberg, cherry tomato, egg, croutons, Parmesan.',descRu:'Куриное филе, айсберг, томаты черри, яйцо, крутоны, Parmesan.',descUz:"Tovuq fileti, aysberg salat, cherri pomidor, tuxum, kruton, Parmesan pishlog'i."},
+  {cat:'salads',icon:'salad',price:50000,vol:'354 g',nameEn:'Greek Salad',nameRu:'Салат Греческий',nameUz:'Grek salati',descEn:'Feta, olives, lemon, cucumber, tomato, bell pepper, oregano.',descRu:'Сыр Feta, маслины, лимон, огурец, томаты, болгарский перец, орегано.',descUz:"Feta pishlog'i, zaytun, limon, bodring, pomidor, bolgar qalampiri, oregano."},
+  {cat:'salads',icon:'salad',price:67000,vol:'290 g',nameEn:"Farmer's Salad",nameRu:'Салат Фермер',nameUz:'Fermer salati',descEn:'Chicken, Parmesan, apple, carrot, walnut, raisin, dried apricot.',descRu:'Куриное филе, Parmesan, яблоко, морковь, грецкий орех, изюм, курага.',descUz:"Tovuq fileti, Parmesan pishlog'i, olma, sabzi, yong'oq, mayiz, quritilgan o'rik."},
+  {cat:'salads',icon:'salad',price:86000,vol:'300 g',nameEn:'Salmon Salad',nameRu:'Салат с лососем',nameUz:'Lososli salat',descEn:'Salmon, egg, lemon, cherry tomato, cucumber, cream cheese.',descRu:'Лосось, яйца, лимон, томаты черри, огурец, Cream Cheese.',descUz:"Losos, tuxum, limon, cherri pomidor, bodring, Cream Cheese."},
+
+  {cat:'bakery',icon:'bread',price:29000,vol:'200 g',nameEn:'Vanilla Strudel',nameRu:'Ванила штрудель',nameUz:'Vanilli shtrudel',descEn:'Puff pastry with vanilla custard and raisins.',descRu:'Слоёное тесто, ванильно-заварной крем с изюмом.',descUz:"Yengil qatlamli xamir, mayiz bilan vanil-zavarnoy krem."},
+  {cat:'bakery',icon:'croissant',price:23000,vol:'100 g',nameEn:'Pain au Chocolat',nameRu:'Пан-о-шоколя',nameUz:'Pan-o-shokolya',descEn:'Laminated pastry with dark chocolate.',descRu:'Слойка с тёмным шоколадом.',descUz:"Qora shokoladli qatlamli pishiriq."},
+  {cat:'bakery',icon:'bread',price:22000,vol:'120 g',nameEn:'Apple Turnover',nameRu:'Яблочный турновер',nameUz:'Olmali tornover',descEn:'Puff pastry filled with apple and vanilla.',descRu:'Слоёная булочка с яблочной начинкой и ванильным ароматом.',descUz:"Olma ichlik va yengil vanil hidli qatlamli bulochka."},
+  {cat:'bakery',icon:'bread',price:22000,vol:'100 g',nameEn:'Palmier',nameRu:'Пальмер',nameUz:'Palmer',descEn:'Crisp puff pastry cookie with sugar.',descRu:'Хрустящее печенье из слоеного теста с сахаром.',descUz:"Shakar bilan qatlamli xamirdan xrustik pechene."},
+
+  {cat:'crepes',icon:'dessert',price:22000,vol:'200 g',nameEn:'Classic French Crêpe',nameRu:'Классический французский креп',nameUz:'Klassik fransuz krepi',descEn:'Plain crêpe, no filling.',descRu:'Блин без начинки.',descUz:'Ichliksiz blin.'},
+  {cat:'crepes',icon:'dessert',price:52000,vol:'310 g',nameEn:'Crêpe with Banana & Nutella',nameRu:'Креп с бананом и пастой Nutella',nameUz:'Banan va Nutella krepi',descEn:'Crêpe filled with Nutella and banana.',descRu:'Блин с пастой Nutella и бананом.',descUz:'Nutella pastasi va banan bilan blin.'},
+  {cat:'crepes',icon:'dessert',price:61000,vol:'310 g',nameEn:'Crêpe Fromage',nameRu:'Креп Фромаж',nameUz:'Fromaj krepi',descEn:'Gouda, Brie, Djugas and mozzarella with honey.',descRu:'Блин, сыр Гауда, Бри, Джугас, Моцарелла, мёд.',descUz:'Blin, Gouda, Brie, Djugas va mozzarella pishloqlari, asal bilan.'},
+
+  {cat:'galettes',icon:'dessert',price:88000,vol:'310 g',nameEn:'Galette with Salmon',nameRu:'Галет с лососем',nameUz:'Lososli galet',descEn:'Buckwheat crêpe, smoked salmon, cream cheese, egg, cream, arugula.',descRu:'Блин, копчёный лосось, Cream Cheese, яйцо, сливки, руккола.',descUz:'Grechixa blini, dudlangan losos, Cream Cheese, tuxum, qaymoq, ruккola.'},
+  {cat:'galettes',icon:'dessert',price:73000,vol:'370 g',nameEn:'Galette Mix',nameRu:'Галет Микс',nameUz:'Galet Miks',descEn:'Crêpe, beef ham, roast chicken, Gouda, mushrooms, cream, egg.',descRu:'Блин, говяжья ветчина, запечённая курица, сыр Gouda, грибы, сливки.',descUz:"Blin, mol go'shti vetchinasi, qovurilgan tovuq, Gouda pishlog'i, qo'ziqorin, qaymoq."},
+  {cat:'galettes',icon:'dessert',price:54000,vol:'300 g',nameEn:'Galette with Sausage & Gouda',nameRu:'Галет с колбасками и сыром Gouda',nameUz:'Kolbasa va Gouda pishloqli galet',descEn:'Beef sausage, Gouda, caramelised onion.',descRu:'Говяжьи колбаски, сыр Gouda, карамелизированный лук.',descUz:"Mol go'shti kolbasasi, Gouda pishlog'i, karamellashtirilgan piyoz."},
+
+  {cat:'mains',icon:'bowl',price:120000,vol:'400 g',nameEn:'Beef Bourguignon',nameRu:'Говядина Бургиньон',nameUz:"Burgunon mol go'shti",descEn:'Braised beef, beef bacon, Parmesan, mushroom, demi-glace.',descRu:'Рубленая говядина, говяжий бекон, пармезан, лук, грибы, соус демиглас.',descUz:"Maydalangan mol go'shti, mol beykoni, parmezan, piyoz, qo'ziqorin, demiglas sousi."},
+  {cat:'mains',icon:'bowl',price:130000,vol:'400 g',nameEn:'Salmon Blanquette',nameRu:'Лосось Бланкет',nameUz:'Losos Blanket',descEn:'Salmon, carrot, spring onion, cream sauce.',descRu:'Лосось, красная морковь, зелёный лук, сливочный соус.',descUz:"Losos, sabzi, ko'k piyoz, qaymoqli sous."},
+  {cat:'mains',icon:'bowl',price:109000,vol:'400 g',nameEn:'Chicken Ballotine',nameRu:'Куриный баллотин',nameUz:'Tovuq ballotin',descEn:'Chicken fillet, jus sauce, micro greens.',descRu:'Куриное филе, соус жу, микрозелень.',descUz:"Tovuq fileti, ju sousi, mikro-yashilliklar."},
+  {cat:'mains',icon:'bowl',price:109000,vol:'400 g',nameEn:'Chicken in Truffle Sauce',nameRu:'Куриное филе в трюфельном соусе',nameUz:"Trюfel sousli tovuq fileti",descEn:'Chicken fillet with a truffle-mushroom sauce.',descRu:'Куриное филе, трюфельно-грибной соус.',descUz:"Tovuq fileti, trюfel-qo'ziqorin sousi."},
+
+  {cat:'juices',icon:'glass',price:68000,vol:'350 ml',nameEn:'Fresh Orange Juice',nameRu:'Фреш Апельсиновый',nameUz:'Apelsin fresh',descEn:'Freshly squeezed juice.',descRu:'Свежевыжатый сок.',descUz:'Yangi siqilgan sharbat.'},
+  {cat:'juices',icon:'glass',price:49000,vol:'350 ml',nameEn:'Fresh Apple Juice',nameRu:'Фреш Яблочный',nameUz:'Olma fresh',descEn:'Freshly squeezed juice.',descRu:'Свежевыжатый сок.',descUz:'Yangi siqilgan sharbat.'},
+  {cat:'juices',icon:'glass',price:36000,vol:'350 ml',nameEn:'Fresh Carrot Juice',nameRu:'Фреш Морковный',nameUz:'Sabzi fresh',descEn:'Freshly squeezed juice.',descRu:'Свежевыжатый сок.',descUz:'Yangi siqilgan sharbat.'},
+  {cat:'juices',icon:'glass',price:53000,vol:'350 ml',nameEn:'Orange-Carrot Fresh',nameRu:'Фреш Апельсиново-Морковный',nameUz:'Apelsin-sabzi fresh',descEn:'Freshly squeezed juice.',descRu:'Свежевыжатый сок.',descUz:'Yangi siqilgan sharbat.'},
+];
+const CAT_ORDER = ['coffee','croissants','desserts','breakfast','summer','sandwiches','salads','bakery','crepes','galettes','mains','juices'];
+function fmt(n){return n.toLocaleString('ru-RU')+' сўм';}
+function T(key){return (I18N[LANG] && I18N[LANG][key]) || I18N.en[key] || '';}
+function pick(item,field){return item[field+({en:'En',ru:'Ru',uz:'Uz'}[LANG])] || item[field+'En'];}
+
+/* ================= branches data (source: BON! Café official location list) ================= */
+const BRANCHES = [
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Fidokor Street, 40',addrRu:'Улица Фидокор, 40',addrUz:"Fidokor ko'chasi, 40",hours:'07:30–23:00',phone:'+998 78 150-18-34'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Uqchi Street, 5',addrRu:'Улица Укчи, 5',addrUz:"O'qchi ko'chasi, 5",hours:'08:00–23:00',phone:'+998 95 855-01-59'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Shota Rustaveli Street, 63',addrRu:'Улица Шота Руставели, 63',addrUz:"Shota Rustaveli ko'chasi, 63",hours:'07:30–23:00',phone:'+998 99 444-18-01'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Beruniy Avenue, 12',addrRu:'Проспект Беруни, 12',addrUz:"Beruniy ko'chasi, 12",hours:'08:00–23:00',phone:'+998 99 444-38-98'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Taras Shevchenko Street, 28',addrRu:'Улица Тараса Шевченко, 28',addrUz:"Taras Shevchenko ko'chasi, 28",hours:'07:30–23:00',phone:'+998 71 252-56-94'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Glinka Street, 46',addrRu:'Улица Глинки, 46',addrUz:"Glinka ko'chasi, 46",hours:'08:00–23:00',phone:'+998 77 391-58-50'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:"Buyuk Ipak Yo'li, 44",addrRu:'Массив Буюк Ипак Йули, 44',addrUz:"Buyuk Ipak yo'li, 44",hours:'07:30–23:00',phone:'+998 99 444-18-05'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Temur Malik Street, 3',addrRu:'Улица Тимура Малика, 3',addrUz:"Temur Malik ko'chasi, 3",hours:'08:00–23:00',phone:'+998 99 444-38-09'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:"Kichik Halqa Yo'li, 26",addrRu:'Малая кольцевая, 26',addrUz:"Kichik halqa yo'li, 26",hours:'08:00–23:00',phone:'+998 77 448-01-91'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Qatortol Street, 28',addrRu:'Улица Катартал, 28',addrUz:"Qatortol ko'chasi, 28",hours:'08:00–23:00',phone:'+998 95 144-00-54'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Sayohat Street, 2',addrRu:'Улица Саёхат, 2',addrUz:"Sayohat ko'chasi, 2",hours:'08:00–23:00',phone:'+998 99 370-11-01'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:"Oqqo'rg'on Street, 14A",addrRu:'Улица Аккурган, 14A',addrUz:"Oqqo'rg'on ko'chasi, 14A",hours:'07:30–23:00',phone:'+998 99 444-18-04'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Chimkent Street, 21',addrRu:'Улица Чимкент, 21',addrUz:"Chimkent ko'chasi, 21",hours:'08:00–23:00',phone:'+998 99 444-18-02'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Tepamasjid Street, 1',addrRu:'Улица Тепамасжид, 1',addrUz:"Tepamasjid ko'chasi, 1",hours:'08:00–23:00',phone:'+998 95 134-13-83'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Amir Temur Avenue, 72A',addrRu:'Проспект Амира Темура, 72A',addrUz:"Amir Temur shoh ko'chasi, 72A",hours:'08:00–23:00',phone:'+998 95 017-30-30'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Istiqbol Street, 18',addrRu:'Улица Истикбол, 18',addrUz:"Istiqbol ko'chasi, 18",hours:'08:00–23:00',phone:'+998 95 992-95-15'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Nodira Street 4, Riviera Mall',addrRu:'Улица Нодиры 4, ТРЦ Riviera',addrUz:"Nodira ko'chasi, 4, Riviera mall",hours:'08:00–23:00',phone:'+998 77 761-76-71'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Qoratosh, 5A, Samarqand Darvoza',addrRu:'Каратош, 5A, Самарканд Дарвоза',addrUz:"Qoratosh, 5A, Samarqand Darvoza",hours:'08:00–23:00',phone:'+998 99 444-40-16'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Alisher Navoiy Avenue, 22',addrRu:'Проспект Алишера Навои, 22',addrUz:"Alisher Navoiy shoh ko'chasi, 22",hours:'08:00–23:00',phone:'+998 71 241-20-67'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Bobur Street, 6',addrRu:'Улица Бабура, 6',addrUz:"Bobur ko'chasi, 6",hours:'08:00–23:00',phone:'+998 95 670-39-89'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Ahmad Donish Street, 80',addrRu:'Улица Ахмада Дониша, 80',addrUz:"Ahmad Donish ko'chasi, 80",hours:'08:00–23:00',phone:'+998 99 010-74-59'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Sayram Street, 26/14',addrRu:'Улица Сайрам, 26/14',addrUz:"Sayram ko'chasi, 26/14",hours:'08:00–23:00',phone:'+998 95 974-99-22'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Nuroniylar Street, 2',addrRu:'Улица Нуронийлар, 2',addrUz:"Nuroniylar ko'chasi, 2",hours:'08:00–23:00',phone:'+998 77 311-82-81'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Amir Temur Avenue, 118A',addrRu:'Проспект Амира Темура, 118A',addrUz:"Amir Temur shoh ko'chasi, 118A",hours:'08:00–23:00',phone:'+998 77 311-82-84'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Bobur Street, 174',addrRu:'Улица Бабура, 174',addrUz:"Bobur ko'chasi, 174",hours:'10:00–23:00',phone:'+998 95 845-17-19'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Zargarlik Street, 10A',addrRu:'Улица Заргалик, 10A',addrUz:"Zargarlik ko'chasi, 10A",hours:'08:00–23:00',phone:'+998 95 124-43-41'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:"Kichik Beshyog'och Street, 124/1",addrRu:'Улица Кичик Бешагач, 124/1',addrUz:"Kichik Beshyog'och ko'chasi, 124/1",hours:'08:00–23:00',phone:'+998 77 798-88-97'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:"Oqqo'rg'on Street, 33",addrRu:'Улица Аккурган, 33',addrUz:"Oqqo'rg'on ko'chasi, 33",hours:'08:00–23:00',phone:'+998 95 150-15-50'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Yangi Sergeli Street',addrRu:'Улица Янги Сергели',addrUz:"Yangi Sergeli ko'chasi",hours:'08:00–23:00',phone:'+998 77 330-76-79'},
+  {region:'tashkent',cityEn:'Tashkent',cityRu:'Ташкент',cityUz:'Toshkent',addrEn:'Botir Zokirov Street 7, Tashkent City Mall',addrRu:'Ботира Зокирова 7, ТРЦ Tashkent City Mall',addrUz:"Botir Zokirov ko'chasi, 7, Tashkent City Mall",hours:'10:00–23:00',phone:'+998 95 722-74-70'},
+  {region:'regions',cityEn:'Bukhara',cityRu:'Бухоро',cityUz:'Buxoro',addrEn:'Bahouddin Naqshband Street, 4',addrRu:'Улица Бахауддина Накшбанда, 4',addrUz:"Bahouddin Naqshband ko'chasi, 4",hours:'08:00–23:00',phone:'+998 95 795-25-21'},
+  {region:'regions',cityEn:'Andijan',cityRu:'Андижан',cityUz:'Andijon',addrEn:'Mashrab Street, 62B',addrRu:'Улица Машраба, 62B',addrUz:"Mashrab ko'chasi, 62B",hours:'08:00–23:00',phone:'+998 95 959-50-91'},
+  {region:'regions',cityEn:'Samarkand',cityRu:'Самарканд',cityUz:'Samarqand',addrEn:'Amir Temur Street, 24',addrRu:'Улица Амира Темура, 24',addrUz:"Amir Temur ko'chasi, 24",hours:'08:00–23:00',phone:'+998 77 736-36-87'},
+  {region:'regions',cityEn:'Chirchiq',cityRu:'Чирчик',cityUz:'Chirchiq',addrEn:'Amir Temur Street, 69',addrRu:'Улица Амира Тимура, 69',addrUz:"Amir Temur ko'chasi, 69",hours:'08:00–23:00',phone:'+998 77 798-88-79'},
+];
+
+/* ================= render: shelves & dessert grid & explorer ================= */
+function shelfCard(item){
+  return `<article class="card" data-cursor="view">
+    <div class="icon">${icon(item.icon)}</div>
+    <div class="cat">${T('cat_'+item.cat)}</div>
+    <h3>${pick(item,'name')}</h3>
+    <p>${pick(item,'desc')}</p>
+    <div class="meta"><span class="price">${fmt(item.price)}</span><span class="vol">${item.vol}</span></div>
+  </article>`;
+}
+function byCat(...cats){ return MENU.filter(i=>cats.includes(i.cat)); }
+const dSizes = ["big","med","small","small","med","small","small","med","small"];
+
+function renderShelves(){
+  document.getElementById('coffee-shelf').innerHTML = byCat('coffee').map(shelfCard).join('');
+  document.getElementById('bakery-shelf').innerHTML = byCat('croissants','bakery').map(shelfCard).join('');
+  document.getElementById('breakfast-shelf').innerHTML = byCat('breakfast').map(shelfCard).join('');
+  document.getElementById('summer-shelf').innerHTML = byCat('summer').map(shelfCard).join('');
+  document.getElementById('dessert-grid').innerHTML = byCat('desserts').map((d,i)=>`
+    <div class="d-card ${dSizes[i]||'small'}" data-cursor="view">
+      <div class="glyph">${icon('dessert')}</div>
+      <h3>${pick(d,'name')}</h3>
+      <p>${pick(d,'desc')}</p>
+      <div class="meta"><span>${fmt(d.price)}</span><span>${d.vol}</span></div>
+    </div>`).join('');
+}
+
+const pillsEl = document.getElementById('pills');
+const gridEl = document.getElementById('m-grid');
+let activeCat = 'all';
+function renderPills(){
+  pillsEl.innerHTML = `<button class="pill${activeCat==='all'?' active':''}" data-cat="all">${T('pill_all')}</button>` +
+    CAT_ORDER.map(k=>`<button class="pill${activeCat===k?' active':''}" data-cat="${k}">${T('cat_'+k)}</button>`).join('');
+}
+function renderGrid(){
+  let wide = 0;
+  gridEl.innerHTML = CAT_ORDER.map(k=>byCat(k).map(item=>{
+    wide++;
+    const cls = wide % 5 === 0 ? ' wide' : '';
+    const show = activeCat==='all' || activeCat===k;
+    return `<div class="m-card${cls}" data-cat="${k}" data-cursor="view" style="${show?'':'display:none'}">
+      <div class="cat">${T('cat_'+k)}</div>
+      <h3>${pick(item,'name')}</h3>
+      <p>${pick(item,'desc')}</p>
+      <div class="meta"><span>${fmt(item.price)}</span><span class="vol">${item.vol}</span></div>
+    </div>`;
+  }).join('')).join('');
+}
+pillsEl.addEventListener('click', e=>{
+  const btn = e.target.closest('.pill'); if(!btn) return;
+  const cat = btn.dataset.cat;
+  const cards = [...gridEl.children];
+  const first = new Map(cards.map(c=>[c,c.getBoundingClientRect()]));
+  activeCat = cat;
+  pillsEl.querySelectorAll('.pill').forEach(p=>p.classList.toggle('active', p.dataset.cat===cat));
+  cards.forEach(c=>{ c.style.display = (cat==='all' || c.dataset.cat===cat) ? '' : 'none'; });
+  if(window.gsap && !reduce){
+    cards.forEach(c=>{
+      if(c.style.display==='none') return;
+      const f = first.get(c), l = c.getBoundingClientRect();
+      const dx = f.left-l.left, dy=f.top-l.top;
+      gsap.fromTo(c,{x:dx,y:dy,opacity:.3},{x:0,y:0,opacity:1,duration:.6,ease:'power3.out'});
+    });
+  }
+});
+
+/* ================= render: branches directory ================= */
+let activeTab = 'tashkent';
+const locListEl = document.getElementById('loc-list');
+const locSearchEl = document.getElementById('loc-search');
+function branchAddr(b){ return b['addr'+({en:'En',ru:'Ru',uz:'Uz'}[LANG])]; }
+function branchCity(b){ return b['city'+({en:'En',ru:'Ru',uz:'Uz'}[LANG])]; }
+function renderBranches(){
+  const term = (locSearchEl.value||'').trim().toLowerCase();
+  const rows = BRANCHES.filter(b=>b.region===activeTab).filter(b=>{
+    if(!term) return true;
+    return (branchAddr(b)+' '+branchCity(b)).toLowerCase().includes(term);
+  });
+  locListEl.innerHTML = rows.map(b=>{
+    const mapsQ = encodeURIComponent(b.addrEn+', '+b.cityEn+', Uzbekistan');
+    const tel = '+'+b.phone.replace(/\D/g,'');
+    return `<div class="loc-row">
+      <div class="loc-main">
+        <span class="loc-city">${branchCity(b)}</span>
+        <span class="loc-addr">${branchAddr(b)}</span>
+      </div>
+      <div class="loc-meta">
+        <span>${b.hours}</span>
+        <a class="loc-phone" href="tel:${tel}">${b.phone}</a>
+        <a class="loc-pin" href="https://www.google.com/maps/search/?api=1&query=${mapsQ}" target="_blank" rel="noopener" aria-label="Directions">${icon('pin')}</a>
+      </div>
+    </div>`;
+  }).join('') || `<div class="loc-row"><div class="loc-main"><span class="loc-addr">—</span></div></div>`;
+}
+document.querySelectorAll('.loc-tabs .pill').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    activeTab = btn.dataset.tab;
+    document.querySelectorAll('.loc-tabs .pill').forEach(p=>p.classList.toggle('active', p===btn));
+    renderBranches();
+  });
+});
+locSearchEl.addEventListener('input', renderBranches);
+
+/* decorative map: cluster of dots for Tashkent + four outer pins for the regions */
+document.getElementById('map').innerHTML = `
+  <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <g stroke="#DDA463" stroke-width=".5" opacity=".18">
+      <line x1="0" y1="80" x2="400" y2="80"/><line x1="0" y1="160" x2="400" y2="160"/>
+      <line x1="0" y1="240" x2="400" y2="240"/><line x1="0" y1="320" x2="400" y2="320"/>
+      <line x1="80" y1="0" x2="80" y2="400"/><line x1="160" y1="0" x2="160" y2="400"/>
+      <line x1="240" y1="0" x2="240" y2="400"/><line x1="320" y1="0" x2="320" y2="400"/>
+    </g>
+    <path d="M204 176 C 150 220, 100 250, 60 320" fill="none" stroke="#DDA463" stroke-width="1.1" opacity=".4"/>
+    <path d="M204 176 C 250 220, 300 190, 330 120" fill="none" stroke="#DDA463" stroke-width="1.1" opacity=".4"/>
+    <path d="M204 176 C 180 130, 140 90, 90 70" fill="none" stroke="#DDA463" stroke-width="1.1" opacity=".4"/>
+  </svg>
+  <div class="pin big" style="left:49%;top:42%;"></div>
+  <div class="pin" style="left:15%;top:78%;"></div>
+  <div class="pin" style="left:80%;top:28%;"></div>
+  <div class="pin" style="left:22%;top:16%;"></div>
+`;
+
+/* ================= apply language ================= */
+function applyLang(lang){
+  LANG = I18N[lang] ? lang : 'uz';
+  localStorage.setItem('bonLang', LANG);
+  document.documentElement.lang = LANG;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{ el.textContent = T(el.dataset.i18n); });
+  document.getElementById('loc-search').placeholder = T('search_ph');
+  document.querySelectorAll('.langsw button').forEach(b=>b.classList.toggle('active', b.dataset.lang===LANG));
+  const track = document.getElementById('marquee-track');
+  const span = `<span>${T('marquee')} <i></i></span>`;
+  track.innerHTML = span+span+span+span;
+  renderPills();
+  renderShelves();
+  renderGrid();
+  renderBranches();
+}
+document.querySelectorAll('.langsw button').forEach(btn=>{
+  btn.addEventListener('click', ()=>applyLang(btn.dataset.lang));
+});
+applyLang(LANG);
+
+/* ---------- preloader ---------- */
+window.addEventListener('load', ()=>{
+  setTimeout(()=>{ document.getElementById('preloader').classList.add('hide'); }, reduce?50:1500);
+});
+
+/* ---------- nav scroll morph ---------- */
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', ()=>{
+  nav.classList.toggle('scrolled', window.scrollY > 80);
+}, {passive:true});
+
+/* ---------- custom cursor ---------- */
+if(!coarse){
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  const label = document.getElementById('cursor-label');
+  let mx=0,my=0,rx=0,ry=0;
+  window.addEventListener('mousemove', e=>{ mx=e.clientX; my=e.clientY; dot.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`; });
+  function raf(){ rx += (mx-rx)*.16; ry += (my-ry)*.16; ring.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`; requestAnimationFrame(raf); }
+  raf();
+  document.addEventListener('mouseover', e=>{
+    const el = e.target.closest('[data-cursor]');
+    if(!el){ ring.classList.remove('expand'); label.textContent=''; return; }
+    ring.classList.add('expand');
+    label.textContent = el.dataset.cursor === 'view' ? T('cursor_view') : el.dataset.cursor==='cta' ? '' : T('cursor_explore');
+    ring.classList.toggle('on-dark', !!el.closest('.dark, #hero, #finalcta, #location'));
+  });
+}else{
+  document.getElementById('cursor-dot').remove();
+  document.getElementById('cursor-ring').remove();
+}
+
+/* ---------- hero cursor parallax ---------- */
+const heroLayer = document.getElementById('hero-parallax');
+if(!coarse && !reduce){
+  document.getElementById('hero').addEventListener('mousemove', e=>{
+    const x = (e.clientX/window.innerWidth-.5)*20;
+    const y = (e.clientY/window.innerHeight-.5)*14;
+    heroLayer.style.transform = `translate(${x}px,${y}px)`;
+  });
+}
+
+/* ---------- reveal on scroll ---------- */
+if('IntersectionObserver' in window){
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, {threshold:.15, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('[data-reveal]').forEach(el=>io.observe(el));
+}else{
+  document.querySelectorAll('[data-reveal]').forEach(el=>el.classList.add('in'));
+}
+
+/* ---------- gsap scrub parallax on decorative shapes ---------- */
+if(window.gsap && window.ScrollTrigger && !reduce){
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.utils.toArray('.steam').forEach((el,i)=>{
+    gsap.to(el, {
+      y: i===0? -60:60, ease:'none',
+      scrollTrigger:{ trigger:'#hero', start:'top top', end:'bottom top', scrub:.6 }
+    });
+  });
+  gsap.to('#atmo-panel', {
+    scale:1.12, ease:'none',
+    scrollTrigger:{ trigger:'#atmosphere', start:'top bottom', end:'bottom top', scrub:.6 }
+  });
+}
+})();
+</script>
+
+</body>
+</html>
